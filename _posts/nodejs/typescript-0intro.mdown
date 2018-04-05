@@ -1,0 +1,136 @@
+---
+title: Typescript / Typescript
+date: 2017-07-12 12:00:00 +0900
+layout: post
+tags: [nodejs, TypeScript Tutorials, TypeScript]
+categories: 
+ - Programming
+---
+
+## Typescript
+
+타입스크립은 형식화한 자바스크립트 슈퍼셋으로 컴파일 결과로 자바스크립을 산출한다.
+
+> TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. Any browser. Any host. Any OS. Open source.
+ - [Typescript](https://www.typescriptlang.org)
+
+### ECMAscript
+
+TypeScript 은 ES5(ECMAscript 5) 문법의 상위집합이다. 그러므로 자바스크립트는 Typescript 프로그램이란 것이다. Typescript 컴파일러는 Typescript 문법을 자바스크립트 문법으로 변환시켜주며, 코드의 순서에서 변수 정의, 이름 등을 바꾸지 않는다, 그래서 자바스크립트 결과물을 브라우저에서 디버깅해서 Typescript 코드를 수정하기 용이하다. 그리고 부가적으로 소스 맵도 제공해서 Typescript 소스를 직접 디버깅하는 것도 가능하다. 
+
+
+https://channel9.msdn.com/posts/Anders-Hejlsberg-Introducing-TypeScript
+
+### 다른 프로그램
+
+https://stackoverflow.com/questions/12694530/what-is-typescript-and-why-would-i-use-it-in-place-of-javascript
+
+[CoffeeScript](http://coffeescript.org/)이 다른 목적이지만 비슷하다.
+, but that really serves a different purpose. IMHO, CoffeeScript provides readability for humans, but TypeScript also provides deep readability for tools through its optional static typing (see this recent blog post for a little more critique). There's also Dart but that's a full on replacement for JavaScript (though it can produce JavaScript code)
+
+
+
+### 설치
+
+Typescript 지원 도구들은 일반적으로 코드 저장시 자바스크립을 결과물로 생산할 수 있다. 그래서 Typescript이 지원하는 라이브러리 동작, 동적 모듈 로딩, 네이밍, 정적 타이핑, 심볼 기반 네비게이션, 구문 완성, 리팩토링 등으로 기존 자바스크립트 방식에 충돌하지 않는다.
+
+
+Node.js를 사용하며 그러므로 npm으로 설치한다.
+
+```sh
+npm install -g typescript
+```
+
+혹은 개발자용 nightly build도 설치할 수 있다.
+
+```sh
+npm install -g typescript@next
+```
+
+TypeScript `tsc` 컴파일러,
+
+```sh
+$ tsc -V
+Version 2.5.2
+```
+
+최신버전 갱신은 [Typscript blog](https://blogs.msdn.microsoft.com/typescript/) 를 참조한다.
+
+#### 변수
+
+변수는 `var` 키워드 다음에 변수명을 선언하고 변수명 다음에 `:` 으로 구분하고 **number, boolean, string, any** 같은 데이터형을 지정한다. 
+
+함수의 반환형식은 `:` 뒤에 선언하고, 반환이 없으면 `void`를 붙인다. 함수 본문에서 반환시 `return` 구문으로 선언한다.
+
+```typescript
+function hello(str:string):void {
+    console.log(str);
+
+}
+function append(str1:string, str2:string):string {
+    return str1+str2;
+}
+
+var str:string = append('hello', 'Typescript!');
+hello(str);
+```
+
+
+#### 배열
+
+배열은 `[]` 괄호로 선언한다.
+
+```typescript
+var list:number[] = [1,2,3];
+var list:Array<number> = [1,2,3]
+```
+
+
+#### 인터페이스
+
+객체지향언어로 인터페이스(Interface)를 지원한다. 인터페이스는 `interface` 키워드로 선언한다. 
+```ts
+interface Person {
+    firstName: string;
+    lastName: string;
+}
+```
+
+인터페이스는 하나의 형으로 사용가능해서, 다른 형식지정자 같이 `:` 뒤에 사용하면 된다.
+
+```ts
+function greeter(person: Person) {
+    return "Hello, " + person.firstName + " " + person.lastName;
+}
+
+var user = { firstName: "Jane", lastName: "User" };
+
+document.body.innerHTML = greeter(user);
+```
+
+#### 클래스
+
+객체지향언어로 클래스(Class)를 지원한다.
+
+```ts
+class Greeter {
+    greeting: string;
+    constructor(message; string) {
+        this.greeting = message;
+    }
+    greet() {
+        return "Hello, " + this.greeting;
+    }
+}
+
+var greeter = new Greeter("world");
+```
+
+
+컴파일하면 다음 같이 자바스크립트 코드로 변환된다.
+
+
+## 참조
+
+[Typescript in 5 min](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+

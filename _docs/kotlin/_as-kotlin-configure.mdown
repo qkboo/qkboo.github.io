@@ -1,0 +1,63 @@
+
+#### Targeting Android
+
+Android’s Gradle model is a little different from ordinary Gradle, so if we want to build an Android project written in Kotlin, we need kotlin-android plugin instead of kotlin:
+
+```
+buildscript {
+    ...
+}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+```
+
+또한 sourceSets 에 kotlin 디렉토리를 추가해서, 자바 소스와 구분되어 사용하는 것을 권합니다.
+
+```
+android {
+  ...
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+}
+```
+
+
+
+
+### JVM 적용하기
+
+####  kotlin-gradle-plugin 적용
+
+kotlin-gradle-plugin 을 상요해서 Kotlin sources 와 modules을 컴파일 합니다.
+
+JVM에서 Koplin plugin을 동작하기 위해서 다음 같이 플러그인을 활성화 합니다.
+
+```
+apply plugin: "kotlin"
+```
+
+
+코플린 소스는 자바와 함께 있어도 무방하고 혹은 별도의 폴더에서 사용해도 됩니다.
+Kotlin sources can be mixed with Java sources in the same folder, or in different folders. The default convention is using different folders:
+
+```
+project
+    - src
+        - main (root)
+            - kotlin
+            - java
+
+```
+
+
+이에 대응하는 **sourceSets** 속성을 사용하면 기본 폴더를 사용하지 않을 수 있습니다.
+
+```
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/myKotlin'
+    main.java.srcDirs += 'src/main/myJava'
+}
+```
+

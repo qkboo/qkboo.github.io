@@ -1,0 +1,33 @@
+# main links
+main:
+  - title: "About"
+    url: /about/
+  - title: "Posts"
+    url: /year-archive/
+  - title: "Documents"
+    url: /collection-archive/
+  # - title: "Documentation"
+  #   url: /docs/index/
+  # - title: "Sitemap"
+  #   url: /sitemap/
+
+# Documentations
+docs:
+  - title: Linux
+    children:
+      - title: "Update Alternatives Compiler environment"
+        url: /linux/linux-update-alternatives/
+      - title: "Awk scripting"
+        url: /linux/linux-awk/
+      - title: "Basic command usages"
+        url: /linux/linux-basic_commands
+  - title: Kotlin
+    children:
+      - title: "Getting Started"
+        url: /kotlin/getting-started/
+      - title: "Variable and data"
+        url: /kotlin/kotlin-functions/
+      - title: "Function"
+        url: /kotlin/kotlin-functions/
+      - title: "Collections"
+        url: /kotlin/kotlin-collections/
