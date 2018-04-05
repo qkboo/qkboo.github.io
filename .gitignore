@@ -1,0 +1,8 @@
+_drafts/
+_site/
+.sass-cache/
+.jekyll-metadata
+*.sublime-workspace
+*.sublime-project
+Gemfile.lock
+.DS_Store
