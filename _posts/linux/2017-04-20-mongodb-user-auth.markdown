@@ -13,7 +13,7 @@ categories:
 
 mongoDB 는 설치과정 중에 인증과 관련해 설정하는 부분이 없어서 설치 후 누구나 DB에 접속 할 수 있다.  인증을 추가해 데이터베이스 관리자와 데이터베이스 사용자로 구분해서 이용하고, 각 데이터베이스의 사용자는 허가된 역할(Role)을 가지고 데이터베이스에 접근 가능하도록 구성한다.
 
-Ubuntu/Debian 리눅스에서 mongoDB Community Edition 설치는 [mongoDB 3.0 on Armbian]({% post_url linux/2017-04-11-mongodb-3.x-install-armv8 %}) 를 참고 할 수 있다.
+Ubuntu/Debian 리눅스에서 mongoDB Community Edition 설치는 [mongoDB 3.0 on Armbian]({% post_url linux/2017-04-11-mongodb-3.4-install-armv8 %}) 를 참고 할 수 있다.
 
 여기서는 다음 두 가지를 다루고 있다.
  **(1) 데이터베이스 관리자 추가** 
