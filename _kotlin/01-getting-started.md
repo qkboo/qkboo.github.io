@@ -1,15 +1,11 @@
 ---
 title: "Getting Started Kotlin"
 permalink: /kotlin/getting-started/
-excerpt: "How to write Kotlin Programming and setup Kotlin developement environments for Android"
-last_modified_at: 2018-03-20T09:00:00-04:00
+last_modified_at: 2018-03-20T15:58:49-04:00
 redirect_from:
-  - /Programming/
+  - "/kotlin"
 toc: true
 ---
-
-
-
 
 ## Getting Started : 기본 문법의 사용
 
@@ -225,11 +221,11 @@ Null-safety 기법으로 *null*{:.keyword}에 안전한 코드를 작성하게 �
 
 아래 같이 `null`  인 값이 지정되면 컴파일 에러를 보인다.
 
-![](images/kotlin/kotlin-nullsafety-null.png){: width="500"}
+![](/images/kotlin/kotlin-nullsafety-null.png){: width="500"}
 
 여기에 null-safety `?` 를 선언해주면 컴파일 에러가 없이 `null`  경우 null 값으로 취급한다.
 
-![](images/kotlin/kotlin-nullsafety.png){: width="500"}
+![](/images/kotlin/kotlin-nullsafety.png){: width="500"}
 
 그런데 꼭 `null` 체크를 해야 한다면 `!!`{:.keyword} 연산자를 변수에 붙여 준다.
 
@@ -496,6 +492,7 @@ if( "박문수" in names) {
   .forEach { println(it) }
 ```
 
+---
 
 [링크: 고수준 함수와 람다](https://kotlinlang.org/docs/reference/lambdas.html)
 
