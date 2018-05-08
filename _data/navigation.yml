@@ -4,16 +4,16 @@ main:
     url: /about/
   - title: "Posts"
     url: /year-archive/
-  - title: "Documents"
-    url: /collection-archive/
-  # - title: "Documentation"
-  #   url: /docs/index/
+  # - title: "Collections"
+  #   url: /collection-archive/
+  - title: "References"
+    url: /references/
   # - title: "Sitemap"
   #   url: /sitemap/
 
-# Documentations
+# Minimal-mistake Documentations
 docs:
-  - title: Linux
+  - title: Minimal-mistakes
     children:
       - title: "Update Alternatives Compiler environment"
         url: /linux/linux-update-alternatives/
@@ -21,13 +21,25 @@ docs:
         url: /linux/linux-awk/
       - title: "Basic command usages"
         url: /linux/linux-basic_commands
+# Kotlin language Documentations
+kotlin:
   - title: Kotlin
     children:
       - title: "Getting Started"
-        url: /kotlin/getting-started/
+        url: /ktlns/getting-started/
       - title: "Variable and data"
-        url: /kotlin/kotlin-functions/
+        url: /ktlns/kotlin-functions/
       - title: "Function"
-        url: /kotlin/kotlin-functions/
+        url: /ktlns/kotlin-functions/
       - title: "Collections"
-        url: /kotlin/kotlin-collections/
+        url: /ktlns/kotlin-collections/
+# Linux Documentations
+linux:
+  - title: Linux
+    children:
+      - title: "Update Alternatives Compiler environment"
+        url: /linux-docs/linux-update-alternatives/
+      - title: "Awk scripting"
+        url: /linux-docs/linux-awk/
+      - title: "Basic command usages"
+        url: /linux-docs/linux-basic_commands
