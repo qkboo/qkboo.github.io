@@ -35,3 +35,15 @@ h6 {
   font-size: $type-size-4;
   font-weight: bold;
 }
+
+/* History section Notes */
+blockquote.right-history {
+  position: relative;
+  left: 60%;
+  width: 40%;
+  #border: 1px solid #afafaf;
+  padding: 5px;
+  background: #f1f1f1;
+  #font-family: "Times New Roman", Times, serif;
+  font: italic 0.8rem Georgia, serif;
+}
