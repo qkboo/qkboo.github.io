@@ -6,10 +6,10 @@
 3. [Android Codelab: Authentication]({{ "" | relative_url }}{% post_url /firebase/2018-05-01-android_codelab03-auth %})
 4. [Android Codelab: Read A message]({{ "" | relative_url }}{% post_url /firebase/2018-05-01-android_codelab04-message %})
 5. [Android Codelab: Send A message]({{ "" | relative_url }}{% post_url /firebase/2018-05-02-android_codelab05-message %})
-{% comment %}6. [Android Codelab: Logging User action]({{ "" | relative_url }}{% post_url /firebase/2018-05-02-android_codelab06-logging %})
+6. [Android Codelab: Logging User action]({{ "" | relative_url }}{% post_url /firebase/2018-05-02-android_codelab06-logging %})
 7. [Android Codelab: Cloud Messaging]({{ "" | relative_url }}{% post_url /firebase/2018-05-02-android_codelab07 %})
 8. [Android Codelab: Remote Config]({{ "" | relative_url }}{% post_url /firebase/2018-05-03-android_codelab08 %})
-9. [Android Codelab: App Invites]({{ "" | relative_url }}{% post_url /firebase/2018-05-03-android_codelab09-invite %}){% endcomment %}
+{% comment %}9. [Android Codelab: App Invites]({{ "" | relative_url }}{% post_url /firebase/2018-05-03-android_codelab09-invite %}){% endcomment %}
 
 
 **Firebase** 소개:
