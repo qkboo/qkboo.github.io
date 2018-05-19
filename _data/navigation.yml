@@ -107,3 +107,5 @@ linux:
         url: /linux/linux-find/
       - title: "ssh와 sshfs"
         url: /linux/ssh-sshfs
+      - title: "Cloud drive for Linux"
+        url: /linux/linux-cloud-drives/

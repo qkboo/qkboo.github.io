@@ -157,6 +157,8 @@ $ sudo ufw allow Samba
 $ sudo ufw allow from 192.168.0.0/16 to any app Samba
 ```
 
+syslog 에 패킷 필터링 결과를 로깅 하려면,
+
 ```
 $ sudo ufw logging on
 Logging enabled
