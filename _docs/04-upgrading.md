@@ -1,14 +1,16 @@
 ---
 title: "Upgrading"
 permalink: /docs/upgrading/
-excerpt: "Instructions and suggestions for upgrading the theme."
+excerpt: "테마 업그레이드를 위한 방법과 고려점. Instructions and suggestions for upgrading the theme."
 last_modified_at: 2018-03-20T15:59:07-04:00
 toc: true
 ---
 
+Minimal Mistakes 테마를 [Ruby Gem]({{ "/docs/quick-start-guide/#ruby-gem-method" | relative_url }}) 혹은 [remote theme]({{ "/docs/quick-start-guide/#github-pages-method" | relative_url }}) 버전을 사용중이면 어렵지 않게 업그레이드 할 수 있다. 
+
 If you're using the [Ruby Gem]({{ "/docs/quick-start-guide/#ruby-gem-method" | relative_url }}) or [remote theme]({{ "/docs/quick-start-guide/#github-pages-method" | relative_url }}) versions of Minimal Mistakes, upgrading is fairly painless.
 
-To check which version you are currently using, view the source of your built site and you should see something similar to:
+현재 버전을 확인해 보려면 사이트 소스 모든 `.html` 파일,  `_site/assets/css/main.css` 혹은 `_site/assets/js/main.min.js` 를 보며 아래 내용을 확인할 수 있다:
 
 ```
 <!--
@@ -19,12 +21,13 @@ To check which version you are currently using, view the source of your built si
 -->
 ```
 
-At the top of every `.html` file, `/assets/css/main.css`, and `/assets/js/main.min.js`.
 
 ## Ruby Gem
 
-Simply run `bundle update` if you're using Bundler (have a `Gemfile`) or `gem update minimal-mistakes-jekyll` if you're not.
+`Gemfile` 이 있고 Bundler를 사용하면 `bundle update` 를 실행하거나, 아니면 `gem update minimal-mistakes-jekyll`을 실행한다. 
+<br>Simply run `bundle update` if you're using Bundler (have a `Gemfile`) or `gem update minimal-mistakes-jekyll` if you're not.
 
+Bundler를 사용하면 다운그레이드 혹은 지정한 출시 ([tag](https://github.com/mmistakes/minimal-mistakes/tags)), branch, commit 로 테마를 고정할 수 있다. `Gemfile`에 `gem "minimal-mistakes-jekyll"` 대신 아래 구문으로 대체한다.<br>
 When using Bundler you can downgrade or lock the theme to a specific release ([tag](https://github.com/mmistakes/minimal-mistakes/tags)), branch, or commit. Instead of `gem "minimal-mistakes-jekyll"` you'd add the following to your `Gemfile`:
 
 ```ruby
@@ -35,10 +38,13 @@ For more information on [installing gems from git repositories](http://bundler.i
 
 ## Remote Theme
 
+원격테마를 사용하기 위해 `_config.yml`에 `remote_theme: "mmistakes/minimal-mistakes"` 를 지정할 때도 역시 ([tag](https://github.com/mmistakes/minimal-mistakes/tags)), branch, commit 에 대해 `@` 를 붙여 가능하다.<br>
 When setting `remote_theme: "mmistakes/minimal-mistakes"` in your `_config.yml` you may also optionally specify a branch, [tag](https://github.com/mmistakes/minimal-mistakes/tags), or commit to use by appending an @ and the Git ref.
 
+예를 들어 이전 배포본 4.8.1로 돌리려면 `mmistakes/minimal-mistakes@4.8.1` 혹은 `mmistakes/minimal-mistakes@bbf3cbc5fd64a3e1885f3f99eb90ba92af84063d` 같이 넣어준다.<br>
 For example you can roll back to release 4.8.1 with `mmistakes/minimal-mistakes@4.8.1` or a specific commit with `mmistakes/minimal-mistakes@bbf3cbc5fd64a3e1885f3f99eb90ba92af84063d`).
 
+깃헙 페이지에 테마를 업데이트하려면 푸시 후에 강제로 빌드를 해야 한다. 아래 git 명령을 참조하라.<br>
 To update the theme on GitHub Pages you'll need to push up a commit to force a rebuild. An empty commit works well if you don't have anything to push at the moment:
 
 ```terminal

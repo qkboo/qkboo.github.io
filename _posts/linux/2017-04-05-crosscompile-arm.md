@@ -24,7 +24,7 @@ categories:
 
 #### update-alternatives
 
-플랫폼에 따른 gcc 환경을 변경하는 것은 `update-alternatives`을 사용한다. 링크 [update-alternatives]({{ site.baseurl }}{% link _docs/linux/linux-update-alternatives.md %})에서 설명을 볼 수 있다.
+플랫폼에 따른 gcc 환경을 변경하는 것은 `update-alternatives`을 사용한다. 링크 [update-alternatives](/linux/linux-update-alternatives/)에서 설명을 볼 수 있다.
 
 
 ### ARM toolchain 설치

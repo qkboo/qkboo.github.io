@@ -22,12 +22,21 @@ feature_miniamlmistake:
     btn_class: "btn--primary"
 
 feature_kotlin:
-  - image_path: /assets/images/feature-kotlin-android-420px.png
+  - image_path: /assets/images/feature-kotlin-android-600px.png
     alt: "Kotlin language"
     title: "Kotlin Language"
-    excerpt: "여기서는 **Kotlin** 에 대한 문서를 보유하고 있다."
+    excerpt: "**Kotlin** 에 대한 개발 문서를 보유하고 있다."
     url: "/kotlin"
     btn_label: "Read More"
+    btn_class: "btn--primary"
+
+feature_linux:
+  - image_path: /assets/images/feature-linux-600px.png
+    alt: "Linux documents."
+    title: "Linux Documents"
+    excerpt: "**Linux** 이용을 위해 정리한 문서 모듬"
+    url: "/linux/"
+    btn_label: "Go to Linux collections"
     btn_class: "btn--primary"
 
 feature_row:
@@ -57,10 +66,8 @@ feature_row4:
 
 {% include feature_row id="intro" type="center" %}
 
-{% include feature_row id="feature_kotlin" type="center" %}
+{% include feature_row id="feature_kotlin" type="left" %}
+
+{% include feature_row id="feature_linux" type="left" %}
 
 {% include feature_row id="feature_miniamlmistake" type="left" %}
-
-{% include feature_row %}
-
-{% include feature_row id="feature_row4" type="center" %}

@@ -40,7 +40,7 @@ toc: true
 이 블로그는 컴퓨터 프로그래밍에 관련한 내용을 정리하고, 관심가는 IT 분야에 대해 글을 쓰기 위한 곳이다. 특히 강의에 필요한 기술과 플랫폼을 공부해 가며 정리한 마크다운 문서를 블로그에 적고 있다.
 </p>
 <p>
-블로그로 올린 글은 <a href="/year-archive"><i class="fa fa-book m-right-auto" aria-hidden="true"></i> Posts</a> 에서 볼 수 있고, 이 블로그 내용을 모아 <a href="/collection-archive"><i class="fa fa-book m-right-auto" aria-hidden="true"></i> Documents</a> 로 좀 더 깊은 내용으로 완성해 나가고자 한다.
+블로그로 올린 글은 <a href="/year-archive"><i class="fa fa-book m-right-auto" aria-hidden="true"></i> Posts</a> 에서 볼 수 있고, 이 블로그 내용을 모아 <a href="/references"><i class="fa fa-book m-right-auto" aria-hidden="true"></i> References</a> 로 좀 더 깊은 내용으로 완성해 나가고자 한다.
 </p>
 
 {% include gallery id="platform_gallery" caption="플랫폼으로 Android, Node.js, Django 등을 강의하고 공부하고 있다" %}
@@ -65,7 +65,7 @@ toc: true
 - [Kotlin Lang](https://kotlinlang.org/)
 - [Node.js](https://nodejs.org/)
 - [Python](https://python.org/)
-
+- [Linux Tux image](https://en.wikipedia.org/wiki/Linux)
 
 ### Other:
 

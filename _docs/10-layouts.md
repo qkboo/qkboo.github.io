@@ -484,15 +484,15 @@ header:
 
 ## Sidebars
 
-The space to the left of a page's main content is blank by default, but has the ability to show an author profile (name, short biography, social media links), custom content, or both.
+페이지 메인 컨텐츠의 왼쪽 공간은 기본적으로 비어 있지만, 저작자 프로필, 사용자 컨텐츠 혹은 모두 보일 수 있다.
 
 ### Author Profile
 
-Add `author_profile: true` to a post or page's YAML Front Matter.
+`author_profile: true` 를 포스티시 추가하거나, 페이지의 YAML Front matter에 추가한다.
 
 ![single layout example]({{ "/assets/images/mm-layout-single.png" | relative_url }})
 
-Better yet, enable it with Front Matter Defaults set in `_config.yml`.
+더 나은 것은 `_config.yml` 안의 기본 Front matter 에 활성화 하는 것이다.
 
 ```yaml
 defaults:
@@ -504,8 +504,7 @@ defaults:
       author_profile: true
 ```
 
-**Note:** To disable the author sidebar profile for a specific post or page, add `author_profile: false` to the YAML Front Matter instead.
-{: .notice--warning}
+**Note:** 특정한 포스트나 페이지에서 사용자 프로필을 비활성화 하려면 `author_profile: false` 를 사용한다.{: .notice--warning}
 
 The theme comes pre-built with a selection of links for the most common social media networks. These are all optional and can be [assigned in `_config.yml`]({{ "/docs/configuration/" | relative_url }}).
 
@@ -573,7 +572,7 @@ Simply add a `color` declaration and the corresponding hex code.
     color: #ff4500;
   }
 }
-``` 
+```
 
 ![Reddit link in author profile with color]({{ "/assets/images/mm-author-profile-reddit-color.png" | relative_url }})
 
@@ -585,7 +584,7 @@ Simply add a `color` declaration and the corresponding hex code.
 
 ### Custom Sidebar Content
 
-Blocks of content can be added by using the following under `sidebar`:
+컨텐츠 블록에서 `sidebar` 밑에 아래를 더해 줄 수 있다:
 
 | Name          | Description                                                |
 | ----          | -----------                                                |
@@ -594,7 +593,7 @@ Blocks of content can be added by using the following under `sidebar`:
 | **image_alt** | Alternate description for image.                           |
 | **text**      | Text. Markdown is allowed.                                 |
 
-Multiple blocks can also be added by following the example below:
+여러 블록이 가능한데 아래 예를 보자:
 
 ```yaml
 sidebar:
@@ -611,21 +610,20 @@ sidebar:
   <figcaption>Example of custom sidebar content added as YAML Front Matter.</figcaption>
 </figure>
 
-**Note:** Custom sidebar content added to a post or page's YAML Front Matter will appear below the author profile if enabled with `author_profile: true`.
-{: .notice--info}
+**Note:** 맞춤 사이드바 내용은 포스트 혹은 페이지의 YAML Front Matter 에 추가될 수 있다. 이것은 `author_profile: true` 가 활성되어 있으면 프로필 밑에 나타난다.{: .notice--info}
 
-### Custom Sidebar Navigation Menu
+### 맞춤 사이드바 탐색 메뉴
 
-To create a sidebar menu[^sidebar-menu] similar to the one found in the theme's documentation pages you'll need to modify a `_data` file and some YAML Front Matter.
+사이드바 메뉴 [^sidebar-menu]를 생성하려면 테마 도큐멘트 페이지와 유사하게, `_data` 파일과 YAML Front Matter 를 수정해야 한다.
 
-[^sidebar-menu]: Sidebar menu supports 1 level of nested links.
+[^sidebar-menu]: 사이드바 메뉴는 중첩 링크의 1단계를 지원한다.
 
 <figure>
   <img src="{{ '/assets/images/mm-custom-sidebar-nav.jpg' | relative_url }}" alt="sidebar navigation example">
   <figcaption>Custom sidebar navigation menu example.</figcaption>
 </figure>
 
-To start, add a new key to `_data/navigation.yml`. This will be referenced later in via YAML Front Matter so keep it short and memorable. In the case of the theme's documentation menu I used `docs`.
+`data/navigation.yml` 파일에 새 키를 추가한다. 이 키를 YAML Front Matter에서 참조하는 것이다. 아래는 `docs` 메뉴를 선언한 예이다:
 
 **Sample sidebar menu links:**
 
@@ -676,17 +674,17 @@ docs:
         url: /docs/javascript/
 ```
 
-Now you can pull these links into any page by adding the following YAML Front Matter.
+이제 메뉴를 YAML Front Matter 에 아래 같이 더해 준다.
+
 
 ```yaml
 sidebar:
   nav: "docs"
 ```
 
-**Note:** `nav: "docs"` references the `docs` key in `_data/navigation.yml` so make sure they match.
-{: .notice--info}
+**Note:** `nav: "docs"` 는 `_data/navigation.yml` 안의 `docs` 키를 참조하므로 서로 일치하게 해야 한다.{: .notice--info}
 
-If you're adding a sidebar navigation menu to several pages the use of Front Matter Defaults is a better option. You can define them in `_config.yml` to avoid adding it to every page or post.
+Font Matter를 사용해서 페이지에 탐색 메뉼를 추가할 거면 Defaults가 좋은 선택지이다. 이것을 `_config.xml` 에 선언하면 어떤 페이지, 포스트에 추가할 필요가 없다.
 
 **Sample sidebar nav default:**
 

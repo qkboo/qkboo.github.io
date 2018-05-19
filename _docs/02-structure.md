@@ -1,13 +1,15 @@
 ---
 title: "Structure"
 permalink: /docs/structure/
-excerpt: "How the theme is organized and what all of the files are for."
+excerpt: "테마가 어떻게 조직되 있고 파일들에 대한 모든것. How the theme is organized and what all of the files are for."
 last_modified_at: 2018-03-20T15:19:22-04:00
 ---
 
+레이아웃, 데이타 파일 그리고 includes 는 기본 위치에 놓여있다. 스타일시트, 스크립은 `assets` 그리고 개발 관련 파일은 루트 디렉토리에 있다.<br>
 Nothing clever here :wink:. Layouts, data files, and includes are all placed in their default locations. Stylesheets and scripts in `assets`, and a few development related files in the project's root directory.
 
-**Please note:** If you installed Minimal Mistakes via the Ruby Gem method, theme files like `_layouts`, `_includes`, `_sass`, and `/assets/` will be missing. This is normal as they are bundled with the [`minimal-mistakes-jekyll`](https://rubygems.org/gems/minimal-mistakes-jekyll) Ruby gem.
+**Please note:** Ruby Gem 으로 테마를 설치하면 테마 파일 `_layouts`, `_includes`, `_sass`, `/assets/` 은 빠져있다. <br>
+If you installed Minimal Mistakes via the Ruby Gem method, theme files like `_layouts`, `_includes`, `_sass`, and `/assets/` will be missing. This is normal as they are bundled with the [`minimal-mistakes-jekyll`](https://rubygems.org/gems/minimal-mistakes-jekyll) Ruby gem.
 {: .notice--info}
 
 ```bash

@@ -4,42 +4,105 @@ main:
     url: /about/
   - title: "Posts"
     url: /year-archive/
+    description: "최근 블로그 게시글 목록과 연단위 묶음"
   # - title: "Collections"
   #   url: /collection-archive/
   - title: "References"
     url: /references/
+    description: "블로그 글을 묶음으로 정리한 참고문서들"
   # - title: "Sitemap"
   #   url: /sitemap/
 
 # Minimal-mistake Documentations
 docs:
-  - title: Minimal-mistakes
+  - title: Getting Started
+    children:
+      - title: "Quick-Start Guide"
+        url: /docs/quick-start-guide/
+      - title: "Structure"
+        url: /docs/structure/
+      - title: "Installation"
+        url: /docs/installation/
+      - title: "Upgrading"
+        url: /docs/upgrading/
+  - title: Customization
+    children:
+      - title: "Configuration"
+        url: /docs/configuration/
+      - title: "Overriding Theme Defaults"
+        url: /docs/overriding-theme-defaults/
+      - title: "Navigation"
+        url: /docs/navigation/
+      - title: "UI Text"
+        url: /docs/ui-text/
+      - title: "Authors"
+        url: /docs/authors/
+      - title: "Layouts"
+        url: /docs/layouts/
+  - title: Content
+    children:
+      - title: "Working with Posts"
+        url: /docs/posts/
+      - title: "Working with Pages"
+        url: /docs/pages/
+      - title: "Working with Collections"
+        url: /docs/collections/
+      - title: "Helpers"
+        url: /docs/helpers/
+      - title: "Utility Classes"
+        url: /docs/utility-classes/
+  - title: Extras
+    children:
+      - title: "Stylesheets"
+        url: /docs/stylesheets/
+      - title: "JavaScript"
+        url: /docs/javascript/
+  - title: Meta
+    children:
+      - title: "History"
+        url: /docs/history/
+      - title: "Contributing"
+        url: /docs/contributing/
+      - title: "Old 2.2 Docs"
+        url: /docs/docs-2-2/
+      - title: "License"
+        url: /docs/license/
+      - title: "Terms &amp; Privacy Policy"
+        url: /terms/
+
+# Kotlin language Documentations
+kotlin:
+  - title: Getting Started
+    children:
+      - title: "Overview"
+        url: /kotlin/kotlin-overview/
+      - title: "Basic Syntax"
+        url: /kotlin/getting-started/
+      - title: "Coding convensions"
+        url: /kotlin/getting-started-coding/
+  - title: Basics
+    children:
+      - title: "Basic Types"
+        url: /kotlin/basics-basic_types/
+      - title: "Packages와 Imports"
+        url: /kotlin/basics-packages_import/
+      - title: "Control Flow"
+        url: /kotlin/basics-controlflow/
+      - title: "Returns & Jump"
+        url: /kotlin/basics-returnjump/
+  - title: Tutorials
+    children:
+      - title: "Kotlin Koans"
+        url: /kotlin/kotlin-koans/
+
+# Linux Documentations
+linux:
+  - title: General Linux
+    url: /linux/
     children:
       - title: "Update Alternatives Compiler environment"
         url: /linux/linux-update-alternatives/
-      - title: "Awk scripting"
-        url: /linux/linux-awk/
-      - title: "Basic command usages"
-        url: /linux/linux-basic_commands
-# Kotlin language Documentations
-kotlin:
-  - title: Kotlin
-    children:
-      - title: "Getting Started"
-        url: /ktlns/getting-started/
-      - title: "Variable and data"
-        url: /ktlns/kotlin-functions/
-      - title: "Function"
-        url: /ktlns/kotlin-functions/
-      - title: "Collections"
-        url: /ktlns/kotlin-collections/
-# Linux Documentations
-linux:
-  - title: Linux
-    children:
-      - title: "Update Alternatives Compiler environment"
-        url: /linux-docs/linux-update-alternatives/
-      - title: "Awk scripting"
-        url: /linux-docs/linux-awk/
-      - title: "Basic command usages"
-        url: /linux-docs/linux-basic_commands
+      - title: "find"
+        url: /linux/linux-find/
+      - title: "ssh와 sshfs"
+        url: /linux/ssh-sshfs

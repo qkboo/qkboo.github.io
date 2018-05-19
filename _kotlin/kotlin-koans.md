@@ -1,10 +1,13 @@
 ---
 title: Kotlin - Koans
+permalink: /kotlin/kotlin-koans/
 date: 2017-06-29 14:00:00 +0900
-layout: post
-tags: [android, kotlin, intellij]
-categories: [Programming]
+toc: true
 ---
+
+kotlinlang.org의 [Tutorials/Kotlin Koans](https://kotlinlang.org/docs/tutorials/koans.html) 를 정리했다.
+
+- 필요에 따라 내용에서 **[링크:..]** 는 외부 링크이다.
 
 
 **Kotlin 이용 개발을 위한 Getting Started Kotlin**

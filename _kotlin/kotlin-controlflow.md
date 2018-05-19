@@ -1,5 +1,5 @@
 ---
-title: Kotlin - Ref/Control Flows
+title: Kotlin - Control Flows
 date: 2017-06-30 09:00:00 +0900
 layout: post
 tags: [kotlin, intellij]
