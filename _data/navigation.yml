@@ -73,6 +73,7 @@ docs:
 # Kotlin language Documentations
 kotlin:
   - title: Getting Started
+    url: /kotlin/
     children:
       - title: "Overview"
         url: /kotlin/kotlin-overview/
