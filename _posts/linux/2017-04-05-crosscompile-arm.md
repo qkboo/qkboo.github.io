@@ -2,12 +2,18 @@
 title: Ubuntu/Debian ARM Cross compile 환경
 date: 2017-04-05 09:00:00 +0900
 layout: post
-tags: [linux, cross compiler, Raspberry Pi, Odroid, Orange Pi, ARM]
-categories: 
-- Linux
+tags: ["linux", "리눅스", "cross compiler", "Raspberry Pi", "라즈베리파이", "Odroid", "Orange Pi", "ARM"]
+categories: ["Linux"]
+toc: true
+author_profile: false
+sidebar:
+  nav: "linux"
 ---
 
 이 글은 우분투, 리눅스 박스에서 GNU ARM Cross compiler 를 설치하고 관리하는 방법을 다루고 있다.
+
+> 2018-05-17: sidebar.nav/linux 사용
+{: .right-history}
 
 ## ARM Cross compiler 설치
 

@@ -101,11 +101,15 @@ linux:
   - title: General Linux
     url: /linux/
     children:
-      - title: "Update Alternatives Compiler environment"
-        url: /linux/linux-update-alternatives/
       - title: "find"
         url: /linux/linux-find/
       - title: "ssh와 sshfs"
         url: /linux/ssh-sshfs
       - title: "Cloud drive for Linux"
         url: /linux/linux-cloud-drives/
+  - title: Developements
+    children:
+      - title: "Update Alternatives Compiler environment"
+        url: /linux/linux-update-alternatives/
+      - title: "ARM Cross compile 환경"
+        url: /linux/crosscompile-arm/

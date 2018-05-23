@@ -57,10 +57,13 @@ model()에 전달한 **modelName**은 mongoose가 자동으로 컬렉션에서 �
 
 [^models]:http://mongoosejs.com/docs/models.html
 
+### connect()
+
+mongoose 에서 mongodb 드라이버에 연결할 때 mongodb 버전에 따라 달리 접근한다. 또한 mongoose 4.x와 5.x 의 몇몇 옵션도 주의해서 사용해야 한다.
 
 #### mongodb 3.x 연결
 
-Promise를 선언하고 connect()를 연결한다.
+mongoose 4.x 버전 부터는 Promise를 선언하고 connect()를 연결한다.
 
 ```js
 var mongoose = require('mongoose');
@@ -69,7 +72,14 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/somecollection')
   .then(() =>  console.log('connection succesful'))
   .catch((err) => console.error(err));
+
+//or  mongo client option
+mongoose.connect( 'mongodb://localhost/somecollection', { useMongoClient: true });
 ```
+
+
+mongoose 5.x 버전 부터는 Promise  connect()를 연결한다.
+
 
 #### mongodb 2.x 연결
 
@@ -90,10 +100,10 @@ var BookScheme = new mongoose.Schema({
 var BookModel = mongoose.model( 'Book', BookScheme);
 ```
 
-또 여러 연결을 사용할 수 있다.
+
+#### 여러 연결
 
 ```js
-
 var conn      = mongoose.connect('mongodb://localhost/testA');
 var conn2     = mongoose.connect('mongodb://localhost/testB');
 
@@ -103,6 +113,10 @@ var ModelB    = conn2.model('Model', new mongoose.Schema({
   title : { type : String, default : 'model in testB database' }
 }));
 ```
+
+
+
+
 
 
 ### API
