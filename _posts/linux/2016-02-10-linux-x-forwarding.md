@@ -24,7 +24,7 @@ SBC 보드 (raspberry pi, odroid c2 등)를 Terminal 기반으로 사용하려�
 윈도우 플랫폼은 다양한 X window 제품들이 있다. 최근 재미있게 사용해본 것으로 [MobaXterm](mobaxterm.mobatek.net)이 있는데, 이 제품은 유료 제품으로 Trial 을 제공하고 있다. 특징적으로  Xserver와 SSH client를 내장하고 있어서 손쉽게 리눅스 제품과 연결해 사용할 수 있다.
 
 ![MobaXterm 이미지](http://mobaxterm.mobatek.net/img/slider/RDP.png)
-[그림. MobaXterm 이미지]
+<figcaption>[그림. MobaXterm 이미지]</figcaption>
 
 ssh를 이용해 X server에 접속하는 것 만으로도 X client 동작을 수행하고, 탭으로 구분한 ssh client 관리가 장점이며, sftp 를 이용해 서버측 파일을 브라우징 할 수 있는 장점이 있다.
  - 단, 기업용은 유료이므로 주의가 필요하다.
@@ -95,7 +95,7 @@ pi@raspberrypi ~ $ lxterminal
 
 라즈베리파이의 xterminal 프로그램이 Mac 실행됩니다.
 
-![Ssh와 X Forwarding]('/images/linux/ssh-x11-pi-xterm.png')
+![Ssh와 X Forwarding](/images/linux/ssh-x11-pi-xterm.png)
 <figcaption>[그림. Ssh와 X Forwarding]</figcaption>
 
 
