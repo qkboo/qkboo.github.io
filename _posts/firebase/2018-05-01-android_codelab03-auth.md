@@ -59,7 +59,7 @@ Google 인증으로 시작해 보자
 
 *app/build.gradle* 파일:
 
-```json
+```gradle
 implementation 'com.google.firebase:firebase-auth:15.0.0'
 ```
 
@@ -101,20 +101,20 @@ if (mFirebaseUser == null) {
 로그아웃을 메뉴 아이템으로 추가해 보자,
 
 ```java
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sign_out_menu:
-                mFirebaseAuth.signOut();
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                mUsername = ANONYMOUS;
-                startActivity(new Intent(this, SignInActivity.class));
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+        case R.id.sign_out_menu:
+            mFirebaseAuth.signOut();
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+            mUsername = ANONYMOUS;
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
     }
+}
 ```
 
 #### 로그인 화면 구현

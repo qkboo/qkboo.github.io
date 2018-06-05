@@ -33,7 +33,7 @@ toc: true
 
 앱 프로젝트의 모듈 build.gradle 에 다음 의존성을 추가
 
-```json
+```gradle
 implementation 'com.google.firebase:firebase-database:15.0.0'
 implementation 'com.google.firebase:firebase-storage:15.0.0'
 ```
@@ -59,105 +59,105 @@ private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAda
 // New child entries
 mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 SnapshotParser<FriendlyMessage> parser = new SnapshotParser<FriendlyMessage>() {
-            @Override
-            public FriendlyMessage parseSnapshot(DataSnapshot dataSnapshot) {
-                FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                if (friendlyMessage != null) {
-                    friendlyMessage.setId(dataSnapshot.getKey());
-                }
-                return friendlyMessage;
-            }
-        };
+      @Override
+      public FriendlyMessage parseSnapshot(DataSnapshot dataSnapshot) {
+          FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+          if (friendlyMessage != null) {
+              friendlyMessage.setId(dataSnapshot.getKey());
+          }
+          return friendlyMessage;
+      }
+  };
 
 DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
-        FirebaseRecyclerOptions<FriendlyMessage> options =
-                new FirebaseRecyclerOptions.Builder<FriendlyMessage>()
-                        .setQuery(messagesRef, parser)
-                        .build();
+    FirebaseRecyclerOptions<FriendlyMessage> options =
+            new FirebaseRecyclerOptions.Builder<FriendlyMessage>()
+                    .setQuery(messagesRef, parser)
+                    .build();
 mFirebaseAdapter = new FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(options) {
-            @Override
-            public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new MessageViewHolder(inflater.inflate(R.layout.item_message, viewGroup, false));
-            }
+        @Override
+        public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+            return new MessageViewHolder(inflater.inflate(R.layout.item_message, viewGroup, false));
+        }
             
-            @Override
-            protected void onBindViewHolder(final MessageViewHolder viewHolder,
-                                            int position,
-                                            FriendlyMessage friendlyMessage) {
-       mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-if (friendlyMessage.getText() != null) {
-   viewHolder.messageTextView.setText(friendlyMessage.getText());
-   viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
-   viewHolder.messageImageView.setVisibility(ImageView.GONE);
-} else {
-   String imageUrl = friendlyMessage.getImageUrl();
-   if (imageUrl.startsWith("gs://")) {
-       StorageReference storageReference = FirebaseStorage.getInstance()
-               .getReferenceFromUrl(imageUrl);
-       storageReference.getDownloadUrl().addOnCompleteListener(
-               new OnCompleteListener<Uri>() {
-           @Override
-           public void onComplete(@NonNull Task<Uri> task) {
-               if (task.isSuccessful()) {
-                   String downloadUrl = task.getResult().toString();
-                   Glide.with(viewHolder.messageImageView.getContext())
-                           .load(downloadUrl)
-                           .into(viewHolder.messageImageView);
-               } else {
-                   Log.w(TAG, "Getting download url was not successful.",
-                           task.getException());
-               }
-           }
-       });
-   } else {
-       Glide.with(viewHolder.messageImageView.getContext())
-               .load(friendlyMessage.getImageUrl())
-               .into(viewHolder.messageImageView);
-   }
-   viewHolder.messageImageView.setVisibility(ImageView.VISIBLE);
-   viewHolder.messageTextView.setVisibility(TextView.GONE);
-}
+        @Override
+        protected void onBindViewHolder(final MessageViewHolder viewHolder,
+                                        int position,
+                                        FriendlyMessage friendlyMessage) {
+   mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+  if (friendlyMessage.getText() != null) {
+     viewHolder.messageTextView.setText(friendlyMessage.getText());
+     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
+     viewHolder.messageImageView.setVisibility(ImageView.GONE);
+  } else {
+     String imageUrl = friendlyMessage.getImageUrl();
+     if (imageUrl.startsWith("gs://")) {
+         StorageReference storageReference = FirebaseStorage.getInstance()
+                 .getReferenceFromUrl(imageUrl);
+         storageReference.getDownloadUrl().addOnCompleteListener(
+                 new OnCompleteListener<Uri>() {
+             @Override
+             public void onComplete(@NonNull Task<Uri> task) {
+                 if (task.isSuccessful()) {
+                     String downloadUrl = task.getResult().toString();
+                     Glide.with(viewHolder.messageImageView.getContext())
+                             .load(downloadUrl)
+                             .into(viewHolder.messageImageView);
+                 } else {
+                     Log.w(TAG, "Getting download url was not successful.",
+                             task.getException());
+                 }
+             }
+         });
+     } else {
+         Glide.with(viewHolder.messageImageView.getContext())
+                 .load(friendlyMessage.getImageUrl())
+                 .into(viewHolder.messageImageView);
+     }
+     viewHolder.messageImageView.setVisibility(ImageView.VISIBLE);
+     viewHolder.messageTextView.setVisibility(TextView.GONE);
+  }
 
 
-viewHolder.messengerTextView.setText(friendlyMessage.getName());
-if (friendlyMessage.getPhotoUrl() == null) {
-   viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(MainActivity.this,
-           R.drawable.ic_account_circle_black_36dp));
-} else {
-   Glide.with(MainActivity.this)
-           .load(friendlyMessage.getPhotoUrl())
-           .into(viewHolder.messengerImageView);
-}
+  viewHolder.messengerTextView.setText(friendlyMessage.getName());
+  if (friendlyMessage.getPhotoUrl() == null) {
+     viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(MainActivity.this,
+             R.drawable.ic_account_circle_black_36dp));
+  } else {
+     Glide.with(MainActivity.this)
+             .load(friendlyMessage.getPhotoUrl())
+             .into(viewHolder.messengerImageView);
+  }
 
-   }
-};
+     }
+  };
 
-mFirebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-   @Override
-   public void onItemRangeInserted(int positionStart, int itemCount) {
-       super.onItemRangeInserted(positionStart, itemCount);
-       int friendlyMessageCount = mFirebaseAdapter.getItemCount();
-       int lastVisiblePosition =
-              mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-       // If the recycler view is initially being loaded or the 
-       // user is at the bottom of the list, scroll to the bottom 
-       // of the list to show the newly added message.
-       if (lastVisiblePosition == -1 ||
-               (positionStart >= (friendlyMessageCount - 1) &&
-                       lastVisiblePosition == (positionStart - 1))) {
-           mMessageRecyclerView.scrollToPosition(positionStart);
-       }
-   }
-});
+  mFirebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+     @Override
+     public void onItemRangeInserted(int positionStart, int itemCount) {
+         super.onItemRangeInserted(positionStart, itemCount);
+         int friendlyMessageCount = mFirebaseAdapter.getItemCount();
+         int lastVisiblePosition =
+                mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+         // If the recycler view is initially being loaded or the 
+         // user is at the bottom of the list, scroll to the bottom 
+         // of the list to show the newly added message.
+         if (lastVisiblePosition == -1 ||
+                 (positionStart >= (friendlyMessageCount - 1) &&
+                         lastVisiblePosition == (positionStart - 1))) {
+             mMessageRecyclerView.scrollToPosition(positionStart);
+         }
+     }
+  });
 
-mMessageRecyclerView.setAdapter(mFirebaseAdapter);
+  mMessageRecyclerView.setAdapter(mFirebaseAdapter);
 ```
 
 
 이어서 파이어베이스 데이터베이스에서 갱신하기 위해서 `onPause()` 와 `onResume()` 메서드를 갱신한다.
 
-MainActivity.java
+*MainActivity.java*
 
 ```java
 @Override

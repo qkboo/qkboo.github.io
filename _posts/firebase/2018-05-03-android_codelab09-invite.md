@@ -20,7 +20,7 @@ toc: true
 
 *app/build.gradle*
 
-```
+```gradle
 implementation 'com.google.android.gms:play-services-appinvite:15.0.0'
 ```
 
@@ -131,7 +131,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 앱을 실행하고 메뉴 항목에서 **Invite**를 실행하면 App Intites가 실행되어 현재 단말의 주소록에서 이메일 혹은 SMS 사용자가 표시된다. 모든 사용자에게 보내거나 사용자를 선택해서 작성한 메시지와 앱 주소를 보내게 된다.
 
 ![](/images/google/firebase-remotelyconfig-log.png){:width="500"}
-
+<figcaption>[그림.]</figcaption>
 
 ---
 

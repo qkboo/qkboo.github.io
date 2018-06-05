@@ -122,7 +122,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 실제 이미지 Uri 를 업로드하는 *putImageInStorage()* 메서드를 구현한다.
 
-```
+```java
 private void putImageInStorage(StorageReference storageReference, Uri uri, final String key) {
    storageReference.putFile(uri).addOnCompleteListener(MainActivity.this,
            new OnCompleteListener<UploadTask.TaskSnapshot>() {

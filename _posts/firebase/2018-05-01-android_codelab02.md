@@ -47,7 +47,7 @@ Firebase console 로 들어간다.
 
 SHA1 해시 값을 얻는다. 기본 debug.keystore 를 사용하면 다음 같다.
 
-```sh
+```terminal
 $ keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -list -v -storepass android
 ```
 
@@ -64,7 +64,7 @@ $ keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore
 
 프로젝트 수준의 build.gradle (<project>/build.gradle):
 
-```json
+```gradle
 buildscript {
   dependencies {
     // Add this line
@@ -76,7 +76,7 @@ buildscript {
 
 앱 수준의 **build.gradle** (<project>/<app-module>/build.gradle):
 
-```json
+```gradle
 dependencies {
   // Add this line
   compile 'com.google.firebase:firebase-core:15.0.0'

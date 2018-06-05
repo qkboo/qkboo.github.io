@@ -18,7 +18,7 @@ Firebase Cloud Messaging (FCM)은 앱 사용자에게 *알림*을 보낼 수 있
 
 앱 모듈 그래들 *app/build.gradle* 파일에 의존성을 추가한다.
 
-```
+```gradle
 implementation 'com.google.firebase:firebase-messaging:15.0.0'
 ```
 

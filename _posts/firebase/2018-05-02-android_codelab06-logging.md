@@ -20,7 +20,7 @@ toc: true
 파이어베이스 인덱싱 의존성은 메시지 작성시과 사용자 행위 기록을 단말에서 인덱스 하도록 한다. 앱 모듈의 build.gradle에 다음을 추가한다.
 
 
-```json
+```gradle
 implementation 'com.google.firebase:firebase-appindexing:15.0.0'
 ```
 

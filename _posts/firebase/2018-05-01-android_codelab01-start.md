@@ -36,6 +36,7 @@ Cloning into 'friendlychat-android'...
 *Android Studio*에서 다운로드한 `android-start` 프로젝트를 들여온다.
 
 ![](/images/google/firebase-codelab-import.png)
+<figcaption>[그림. 코드랩 소스 들여오기]</figcaption>
 
 이 프로젝트에서 파이어베이스 코드랩을 따라갈 때 사용할 클래스 파일은 *MainActivity*, *MyFirebaseInstanceIdService*, *MyFirebaseMessagingService* 이다.
 

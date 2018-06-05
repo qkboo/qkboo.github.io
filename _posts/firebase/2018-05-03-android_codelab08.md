@@ -36,7 +36,7 @@ Firebase Cloud Messaging (FCM)은 앱 사용자에게 *알림*을 보낼 수 있
 
 *app/build.gradle*
 
-```
+```gradle
 implementation 'com.google.firebase:firebase-config:15.0.0'
 ```
 
@@ -134,7 +134,7 @@ private void applyRetrievedLengthLimit() {
 
 또한 메뉴에서 설정을 다시 받아 오게끔 옵션 메뉴에 추가한다.
 
-MainActivity.java
+*MainActivity.java*
 
 ```java
 @Override
