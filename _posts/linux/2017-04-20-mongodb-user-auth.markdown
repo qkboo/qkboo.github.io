@@ -2,28 +2,32 @@
 title: mongodb - User Authentication
 date: 2017-04-20 09:00:00 +0900
 layout: post
-tags: [linux, mongodb]
+description: "ubuntu, debian에 mongodb 3 을 설치한다. mongdb community edition 3.6 버전을 우분투, 데비안 시스템 혹은 클라우드 서버에 설치하는 과정을 담고 있다"
+tags: [linux, mongodb, armbian, odroid-c2, ubuntu, debian, arm64, amd64, "우분투", "데이안"]
 categories:
 - Linux
 - Database
 ---
 
+MongoDB 설치후 데이터베이스 위치, 로그, 인증 등에 관련한 서버 구성과 설정을 정리한다. MongoDB 2.6 과 MongoDB 3.x 버전을 사용했다.
 
 ## mongoDB 접근제어
 
 mongoDB 는 설치과정 중에 인증과 관련해 설정하는 부분이 없어서 설치 후 누구나 DB에 접속 할 수 있다.  인증을 추가해 데이터베이스 관리자와 데이터베이스 사용자로 구분해서 이용하고, 각 데이터베이스의 사용자는 허가된 역할(Role)을 가지고 데이터베이스에 접근 가능하도록 구성한다.
 
-Ubuntu/Debian 리눅스에서 mongoDB Community Edition 설치는 [mongoDB 3.0 on Armbian]({% post_url linux/2017-04-11-mongodb-3.4-install-armv8 %}) 를 참고 할 수 있다.
-
 여기서는 다음 두 가지를 다루고 있다.
+
  **(1) 데이터베이스 관리자 추가** 
  **(2) 데이터베이스 사용자 추가**
 
 ### mongodb 설치
 
-여기서 mongodb 3.x 를 대상으로 
+Ubuntu/Debian 리눅스 배포본에 MongoDB 3.x 버전이 지원되지 않으면, mongoDB Community Edition 를 패키지 혹은 소스로 설치할 수 있다. 
 
-##### Ubuntu/Debian 계열
+ - [MongoDB Community Edition 3.4 on Armv8]({% post_url linux/2017-04-11-mongodb-3.4-install-armv8 %})
+ - [MongoDB Community Edition 3.6]({% post_url linux/2018-06-08-mongodb-3.6-install %})
+
+#### Ubuntu/Debian 계열
 
 ```sh
 sudo apt install mongodb
@@ -36,22 +40,20 @@ sudo systemctl start mongodb.service
 ```
 
 
-##### macOS
+#### macOS
 
 Homebrew 를 사용해 설치한다.
 
-```sh
+```terminal
 brew search mongodb
 brew install mongodb@3.2
 ```
 
 그리고 서비스를 시작한다.
 
-```sh
+```terminal
 brew services start mongodb@3.2
 ```
-
-mongod --config /usr/local/etc/mongod.conf
 
 
 ### 데이터베이스 관리자
@@ -68,7 +70,6 @@ mongod --port 27017 --dbpath /data/db1
 $ sudo systemctl restart mongod.service
 $ sudo systemctl status mongod.service
 ```
-
 
 mongoDB 데이터베이스 관리자 추가를 위해 **admin** 데이터베이스 사용자에 `userAdminAnyDatabase` 롤을 추가해준다.
 
@@ -327,3 +328,8 @@ db.createUser( { user: "user1",
 ```
 
 다양한 사례는 [createUser() Exmaple](https://docs.mongodb.com/manual/reference/method/db.createUser/#examples) 를 참고하자.
+
+
+## MongoDB에 관련 글
+
+{% include_relative _inc_mongodb_series.md %}
