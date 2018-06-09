@@ -98,7 +98,7 @@ analytics:
 # Site Author
 author:
   name             : "qkboo"
-  avatar           : "https://media.licdn.com/dms/image/C4D03AQHNEDiR1NupPQ/profile-displayphoto-shrink_200_200/0?e=1528048800&v=alpha&t=OWRmsh6yieMaatf0sB8xb6BeuY3BwyDs7ibs3FGVd6g" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "https://media.licdn.com/dms/image/C4D03AQHNEDiR1NupPQ/profile-displayphoto-shrink_200_200/0?e=1533772800&v=beta&t=jwz7fRUqoQSZHGxCjE0vaGHyPw6DZ6SvvvQUxmbR8Yo" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Keep It Simple, Stupid"
   location         : "Paju, Korea"
   email            : ""
