@@ -161,7 +161,7 @@ nvm ls-remote --lts |grep Latest
 nvm에서 새로운 node 버전을 설치하면서 기존 node 버전에서 사용중인 패키지를 통합해서 설치 할 수 있다.  예를 들어 최신 8 버전을 설치하며 사용중인 기존 6버전 패키지를 함께 설치하려면,
 
 ```sh
-nvm install 8 --reinstall-packages-from=6
+nvm install v8 --reinstall-packages-from=v8.0.1
 ```
 
 
@@ -223,94 +223,96 @@ C:\>nodist selfupdate
 
 기타 다른 환경에서 설치 및 사용법은 [nodist](https://github.com/marcelklehr/nodist) 에서 확인한다.
 
-
-### Process manager
-
-pm2와 nodemon을 살펴본다.
-
-#### pm2 설치
-
-node.js 앱을 시스템 서비스로 등록하기 위해서 **pm2** 를 설치한다.
+---
 
 
-```
-npm i -g pm2
-```
+### npm
 
-예를 들어 express 앱이 있으면 다음 같이 pm2로 시작한다.
+`npm` 은 nodejs 패키지 관리자로 선택한 모듈을 설치, 갱신 및 삭제할 수 있고, 스크립팅을 통해 프로세스 관리까지 할 수 있다.
 
-```
-cd www-app
-pm2 start -n "www-app" bin/www
-```
+#### npm upgrade
 
-
-#### pm2 log format
-
-pm2 이전 버전은 시작시 timestamp를 로그에 저장하고 싶으면 시작시 `--log-date-format` 옵션을 이용
-
-```
-pm2 start app.js --log-date-format 'DD-MM HH:mm:ss.SSS'
-```
-
-시작 설정 파일에 `log_date_format` 옵션을 줄 수 있다.
-
-```
-"log_date_format"   : "DD-MM HH:mm:ss.SSS",
-```
-
-
-pm2 2.x 이후 부터는 log 의 형식을 `--format` 옵션을 지정할 수 있다.
-
-```
-pm2 logs --format
-```
-
-
-#### pm2 startup
-
-startup 시 pm2 start 로 생성되는 .pm2 디렉토리의 pid 와 app.js 파일을 실행해 준다. 
-
-pm2 startup systemd 로 스타트를 하면 2개의 프로세스가 만들어 진다.
-
-방법은,,,
-
-1. 먼저 앱을 시작해 둔다.
+`node`를 설치후 `npm`을 업그레이드 해준다. npm 자체는 다음 같이 업그레이드 한다.
 
 ```sh
-pm2 start -n "www-app" bin/www
+npm i -g npm
+npm install npm@latest -g
 ```
 
 
-2. dump를 생성한다.
+#### Outdated module
 
-pm2로 현재 실행중인 프로세스 정보를 `save`로 덤프하게 저장한다. `systemd` 서비스 스크립을 작성하는데 유용하다.
-
-```
-pm2 save
-```
-
-3. pm2 startup 명령
-
-`pm2 startup` 명령은 pm2로 실행중인 프로세스를 systemd 서비스 유니트 파일로 제어 할 수 있다. 명령을 실행하면 `sudo` 명령으로 실행할 수 있는 스크립을 출력해 준다.
+현재 package.json 에 설치된 버전과 명시된 버전 그리고 최신 버전과 차이를 알 수 있다.
 
 ```sh
-$ pm2 startup systemd
-...
-sudo env PATH=$PATH:/home/foo/.nvm/versions/node/v8.8.1/bin /home/foo/.nvm/versions/node/v8.8.1/lib/node_modules/pm2/bin/pm2 startup systemd -u foo --hp /home/foo
+npm outdated
+Package                  Current  Wanted  Latest  Location
+body-parser               1.15.2  1.15.2  1.18.2  application-name
+debug                      0.7.4   0.7.4   3.1.0  application-name
 ```
 
-이 스크립을 실행해 주면 **pm2-foo.service** 서비스 유니 파일이 생성된다.
+최신 버전으로 설치를 하려면 package.json을 버전코드로 변경하고 업데이트를 진행한다.
+혹은 모든 패키지를 업데이트할 수 있다.
 
 ```
-Target path
-/etc/systemd/system/pm2-foo.service
+npm update
++ mongoose@4.13.1
+added 1 package, removed 4 packages and updated 2 packages in 32.975s
 ```
 
-이 서비스 파일을 활성화하고 시작해준다.
+
+#### `npm in` vs. `npm up`
+
+install 과 update는 package.json 에 명시된 버전에 대응해 실행된다.
+ - npm install installs all modules that are listed on package.json file and their dependencies.
+ - npm update updates all packages in the node_modules directory and their dependencies.
+ - npm install express installs only the express module and its dependencies.
+ - npm update express updates the express module and its dependencies.
+
+[stackoverflow: npm install vs update](https://stackoverflow.com/questions/12478679/npm-install-vs-update-whats-the-difference) 에 따르면 버전 관리에 따른 차이를 보인다.
+
+개별 모듈만 업그레이드 하려면 `install @latest` 같이 사용한다. 다음 같이 npm outdated 로 프로젝트 버전 상태를 확인해 보면
 
 ```sh
-systemctl enable pm2-foo
+$ npm outdated
+Package                     Current   Wanted      Latest  Location
+agenda                        0.9.0    0.9.1       1.0.3  www_app
+body-parser                  1.15.2   1.15.2      1.18.2  www_app
+charset                       1.0.0    1.0.1       1.0.1  www_app
+cheerio                      0.22.0   0.22.0  1.0.0-rc.2  www_app
+cookie-parser                 1.3.5    1.3.5       1.4.3  www_app
+debug                         2.2.0    2.2.0       3.1.0  www_app
+ejs                           2.5.7    2.5.8       2.5.8  www_app
+express                      4.14.1   4.14.1      4.16.3  www_app
+iconv                         2.2.1    2.3.0       2.3.0  www_app
+mongoose                     4.13.2  4.13.12      5.0.13  www_app
+morgan                        1.7.0    1.7.0       1.9.0  www_app
+multer                        1.2.0    1.3.0       1.3.0  www_app
+passport                      0.2.2    0.2.2       0.4.0  www_app
+passport-local-mongoose       1.3.0    1.3.0       5.0.0  www_app
+pug                      2.0.0-rc.4    2.0.3       2.0.3  www_app
+request                      2.83.0   2.85.0      2.85.0  www_app
+serve-favicon                 2.3.0    2.3.2       2.5.0  www_app
 ```
 
-이제 시스템을 재시작해도 pm2 로 실행중인 프로세스는 자동으로 시작된다.
+`i` 명령으로 현재 package.json에 명시된 버전이 설치된다.
+
+```
+$ npm i mongoose
++ mongoose@4.13.12
+updated 7 packages in 17.037s
+```
+
+@latest 제한자로 최신 버전으로 업그레이드 할 수 있다.
+
+```
+$ npm i mongoose@latest
++ mongoose@5.0.13
+```
+
+
+어쨌든 버전 갱신을 목적으로 하면 `npm i` 를 일반적으로 써도 무방하다. 
+
+### Process management
+
+다음 []() 글로 좀더 깊은 내용으로 옮겼다.

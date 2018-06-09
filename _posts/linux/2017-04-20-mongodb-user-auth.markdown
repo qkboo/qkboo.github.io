@@ -24,8 +24,8 @@ mongoDB 는 설치과정 중에 인증과 관련해 설정하는 부분이 없�
 
 Ubuntu/Debian 리눅스 배포본에 MongoDB 3.x 버전이 지원되지 않으면, mongoDB Community Edition 를 패키지 혹은 소스로 설치할 수 있다. 
 
- - [MongoDB Community Edition 3.4 on Armv8]({% post_url linux/2017-04-11-mongodb-3.4-install-armv8 %})
- - [MongoDB Community Edition 3.6]({% post_url linux/2018-06-08-mongodb-3.6-install %})
+ - [MongoDB Community Edition 3.4 on Armv8]({% post_url /linux/2017-04-11-mongodb-3.4-install-armv8 %})
+ - [MongoDB Community Edition 3.6]({% post_url /linux/2018-06-08-mongodb-3.6-install %})
 
 #### Ubuntu/Debian 계열
 
