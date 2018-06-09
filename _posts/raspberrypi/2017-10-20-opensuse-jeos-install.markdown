@@ -125,21 +125,69 @@ zypper in yast*        # to install all packages matching 'yast*'
 
 - [zypper usages](https://en.opensuse.org/SDB:Zypper_usage) 에서 사용방법을 자세히 알 수 있다.
 
-먼저 최근 업그레이드된 필요한 패키지를 다운로드하고 설치한다.[^1]
+머저 최신 소프트웨어 목록으로 업데이트 한다.
 
 ```sh
-# zypper update
-or
-# zypper up
+zypper refresh
+zypper ref
 ```
 
-> 지원중단된 패키지, 나뉘어진 패키지 등의 의존성을 고려한 업그레이드를 하려면 `dup` 명령을 사용한다.
-> 
+그리고 최근 업그레이드된 필요한 패키지를 다운로드하고 설치한다.[^1]
+
+```sh
+zypper update
+zypper up
+```
+
+
+> 지원중단된 패키지, 나뉘어진 패키지 등의 의존성을 고려한 업그레이드를 하려면 `dup` 명령을 사용한다.> 
 > ```sh
 > zypper dup             # distribution upgrade
 > zypper dist-upgrade
 > ```
 
+
+##### upgrade 후에
+
+실행중인 데몬을 재시작해줄 필요가 있는데 `zypper ps -s` 를 실행하면 목록을 표시해 준다.
+
+```
+pi64:/home/ # zypper ps -s
+The following running processes use deleted files:
+
+PID   | PPID  | UID  | User       | Command                    | Service
+------+-------+------+------------+----------------------------+-------------------
+307   | 1     | 0    | root       | systemd-journald (deleted) | systemd-journald
+484   | 1     | 0    | root       | auditd                     | auditd
+502   | 1     | 1000 | qkboo      | python3                    | jupyter
+513   | 1     | 499  | messagebus | dbus-daemon (deleted)      | dbus
+525   | 1     | 0    | root       | systemd-logind (deleted)   | systemd-logind
+529   | 1     | 0    | root       | agetty (deleted)           | getty@tty1
+996   | 1     | 0    | root       | cupsd                      | cups
+1018  | 1     | 0    | root       | cron                       | cron
+1043  | 1     | 74   | ntp        | ntpd                       | ntpd
+1047  | 1043  | 74   | ntp        | ntpd                       | ntpd
+1145  | 1     | 0    | root       | python2.7                  | fail2ban
+1146  | 1     | 1000 | qkboo      | node                       | pm2-qkboo
+2131  | 1     | 0    | root       | agetty (deleted)           | serial-getty@ttyS0
+5716  | 1146  | 1000 | qkboo      | node                       | pm2-qkboo
+5749  | 1146  | 1000 | qkboo      | node                       | pm2-qkboo
+12400 | 1     | 0    | root       | sshd (deleted)             |
+12402 | 1     | 1000 | qkboo      | systemd (deleted)          |
+12405 | 0     | 1000 | qkboo      | systemd (deleted)          |
+12411 | 12400 | 1000 | qkboo      | sshd (deleted)             |
+12412 | 12411 | 1000 | qkboo      | bash                       |
+12783 | 12412 | 0    | root       | sudo                       |
+12784 | 12783 | 0    | root       | bash                       |
+12876 | 1     | 0    | root       | nginx                      | nginx
+12879 | 12876 | 494  | nginx      | nginx                      | nginx
+12880 | 12876 | 494  | nginx      | nginx                      | nginx
+12881 | 12876 | 494  | nginx      | nginx                      | nginx
+12882 | 12876 | 494  | nginx      | nginx                      | nginx
+15908 | 502   | 1000 | qkboo      | node                       | jupyter
+15916 | 15908 | 1000 | qkboo      | node                       | jupyter
+26929 | 502   | 1000 | qkboo      | node                       | jupyter
+```
 
 #### ip 주소 확인
 

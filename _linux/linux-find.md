@@ -2,7 +2,7 @@
 title: Linux - find usages
 date: 2017-04-05 09:00:00 +0900
 layout: single
-tags: ["linux"]
+tags: ["linux", "리눅스", "find"]
 categories: [Linux, Programming]
 toc: true
 sidebar:
@@ -12,7 +12,7 @@ sidebar:
 `find` 명령에서 자주 사용하는 쓰임새를 요약했다.
 
 > 2018-05: rm, i-node 내용 추가
-
+{:.right-history}
 
 ## find 명령
 

@@ -1,3 +1,15 @@
+---
+title: Linux - update-alternatives
+date: 2016-11-05 09:00:00 +0900
+layout: single
+tags: ["linux", "grub", "exfat", "keyboard", "키보드"]
+categories: [Linux, Programming]
+toc: true
+sidebar:
+  nav: "linux"
+---
+
+
 ## Cheat Linux System
 
 
@@ -202,31 +214,6 @@ armv8             // 64bit
 $ sudo dpkg-reconfigure tzdata
 ```
 
-
-## find
-
-```
-find ./ -name 'Debug' -exec rm -rf {} \;
-```
-
-
-### 파일 삭제
-
-???? 같이 지워지지 안는 파일 같은 경우  inode로 삭제할 수 있다.
-
-```sh
-~$ ls -ali
-~$ ls -ali
-total 2068
-42467329 drwxr-xr-x 11 qkboo qkboo    4096 Jun 20 22:54 .
-       2 drwxr-xr-x 10 qkboo qkboo    4096 Jun  1 12:56 ..
-42467482 drwxr-xr-x  2 qkboo qkboo   12288 Jul  2  2016 .Picasa3Temp
-42598444 drwxrwxrwx  3 qkboo qkboo    4096 Mar 29 23:45 ??????
-42475521 drwxr-xr-x  4 qkboo qkboo    4096 Jun 20 22:52 Design_Assets
-42467936 drwxr-xr-x 14 qkboo qkboo    4096 Mar  4 16:39 Incoming
-
-~$ find . -inum 42598444 -exec rm {} \;
-```
 
 
 
