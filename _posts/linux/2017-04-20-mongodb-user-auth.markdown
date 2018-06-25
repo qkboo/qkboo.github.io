@@ -1,5 +1,5 @@
 ---
-title: mongodb - User Authentication
+title: MongoDB - Database와 User Authentication
 date: 2017-04-20 09:00:00 +0900
 layout: post
 description: "ubuntu, debian에 mongodb 3 을 설치한다. mongdb community edition 3.6 버전을 우분투, 데비안 시스템 혹은 클라우드 서버에 설치하는 과정을 담고 있다"
@@ -9,7 +9,10 @@ categories:
 - Database
 ---
 
-MongoDB 설치후 데이터베이스 위치, 로그, 인증 등에 관련한 서버 구성과 설정을 정리한다. MongoDB 2.6 과 MongoDB 3.x 버전을 사용했다.
+> 2018-06-21 설치 링크로 대체
+{:.right-history}
+
+MongoDB 설치후 데이터베이스 위치, 로그, 인증 등에 관련한 서버 구성과 설정을 정리한다. MongoDB 2.6 과 MongoDB Community Edition 3.x 버전을 사용했다.
 
 ## mongoDB 접근제어
 
@@ -17,67 +20,44 @@ mongoDB 는 설치과정 중에 인증과 관련해 설정하는 부분이 없�
 
 여기서는 다음 두 가지를 다루고 있다.
 
- **(1) 데이터베이스 관리자 추가** 
- **(2) 데이터베이스 사용자 추가**
+- **(1) 데이터베이스 관리자 추가** 
+- **(2) 데이터베이스 사용자 추가**
 
-### mongodb 설치
-
-Ubuntu/Debian 리눅스 배포본에 MongoDB 3.x 버전이 지원되지 않으면, mongoDB Community Edition 를 패키지 혹은 소스로 설치할 수 있다. 
+Ubuntu/Debian 리눅스 배포본에 MongoDB 3.x 버전이 지원되지 않으면, MongoDB Community Edition 를 패키지 혹은 소스로 설치할 수 있다. 
 
  - [MongoDB Community Edition 3.4 on Armv8]({% post_url /linux/2017-04-11-mongodb-3.4-install-armv8 %})
  - [MongoDB Community Edition 3.6]({% post_url /linux/2018-06-08-mongodb-3.6-install %})
 
-#### Ubuntu/Debian 계열
-
-```sh
-sudo apt install mongodb
-```
-
-서비스 시작은 systemd 를 사용한다.
-
-```sh
-sudo systemctl start mongodb.service
-```
-
-
-#### macOS
-
-Homebrew 를 사용해 설치한다.
-
-```terminal
-brew search mongodb
-brew install mongodb@3.2
-```
-
-그리고 서비스를 시작한다.
-
-```terminal
-brew services start mongodb@3.2
-```
-
 
 ### 데이터베이스 관리자
 
-명령라인에서 `mongod`를 시작할 때는, mongoDB를 비인증 모드로 시작한다.
+비인증 모드로 MongoDB를 시작하기 위해 명령라인 `mongod`를 다음 같이 비인증 모드로 시작할 수 있다.
 
-```sh
+```terminal
 mongod --port 27017 --dbpath /data/db1
 ```
 
-*systemd* 사용시에는 *mongod.conf* 파일에 `security.authorization` 이 없이 systemd 로 서비스를 재시작 한다.
+또는 *systemd* 사용시에는 *mongod.conf* 파일에 `security.authorization` 없이  MongoDB 서비스를 재시작 한다.
 
-```sh
-$ sudo systemctl restart mongod.service
-$ sudo systemctl status mongod.service
+```terminal
+sudo systemctl restart mongod.service
+sudo systemctl status mongod.service
 ```
 
-mongoDB 데이터베이스 관리자 추가를 위해 **admin** 데이터베이스 사용자에 `userAdminAnyDatabase` 롤을 추가해준다.
+이어서 클라이언트로 데이터베이스에 접속한다.접속에 성공하면 **>** 프롬프트가 나온다.
+
+```terminal
+$mongo
+>
+```
+
+`mongo` 클라이언트로 접속해 mongoDB 데이터베이스 관리자 추가를 위해 **admin** 데이터베이스 사용자에 `userAdminAnyDatabase` 롤을 추가해준다.
 
 #### mongoDB 2.4 이전 관리자 계정 추가
 
 mongoDB 2.4 까지는 새로운 사용자는  `db.addUser()` 로 추가한다.[^1]
 
-```js
+```terminal
 $ mongo     // mongo client 로 접속
 >use admin  // admin DB 사용
 >db.addUser( { user: "<username>", // admin name
@@ -96,7 +76,7 @@ $ mongo     // mongo client 로 접속
 mongoDB 2.6 이후는 `db.createUser()` 로 사용자를 추가한다. [^2]
 다음은 admin 데이터베이스에서 사용자를 관리하는 admin 계정을 생성하고 있다.
 
-```js
+```terminal
 $ mongo     // mongo client 로 접속
 > use admin
 switched to db admin
