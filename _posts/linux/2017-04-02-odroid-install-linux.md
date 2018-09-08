@@ -6,15 +6,16 @@ tags: [linux, odroid, armbian, install]
 categories: Linux
 ---
 
+> 2018-07-10: UART 정보 추가
 > 2017-07-24: exFAT 추가
 {:.right-history}
 
 
-Odroid C2 
+## Odroid C2 - Install Armbian
 
 ![](http://odroid.com/dokuwiki/lib/exe/fetch.php?tok=53e4d9&media=http%3A%2F%2Fdn.odroid.com%2Fhomebackup%2F201602%2FODROID-C2.png){: width="600"}
 
-[그림. armv8 Odroid C2]
+<figure>[그림. armv8 Odroid C2]</figure>
 
 
 다음은 Odroid C2에 Ubuntu 16.04 minimal 버전, 그리고 Ambian Jessie를 설치하고, 처음 설정에 대한 것이다.
@@ -28,7 +29,7 @@ Odroid C2
 
 
 
-## Ambian for Odroid
+### Ambian for Odroid
 
 Armbian에서 데스크탑 버전으로 Ubuntu 와 서버 버전으로 Debian Jessie를 다운로드 가능하다.
 
@@ -36,11 +37,10 @@ Armbian에서 데스크탑 버전으로 Ubuntu 와 서버 버전으로 Debian Je
 
 여기서는 Debian Jessie 버전을 사용한다.
 
-### Install
+#### 준비사항
 
 Micro SD Card를 사용하면 가능하면 **UHX-1 Class 10** 를 사용하도록 한다.
 
-#### 준비사항
 
 Odroid C2는 Micro SD Card 혹은 eMMC Card로 부팅 디스크를 구성할 수 있다.
  - Micro SD Card: **UHX-1 Class 10** 이상
@@ -61,24 +61,27 @@ linux 7z은  ```apt-get install p7zip-full``` 으로 설치한다.
 
 #### Etcher 사용
 
-[Etcher](https://etcher.io) 에서 다운로드해서 실행하고, SD Card를 준비한다.
+모든 플랫폼에서 이미지 쓰기가 가능한 [Etcher](https://etcher.io) 사용을 권장한다.
 
-![](https://etcher.io/static/screenshot-1x.gif){: width="600"}
+다운로드한 Debian_jessie_default.7z 이미지 파일을 선택하고 선택한 SD Card에 이미지를 쓴다.
 
-그리고 다운로드한 Debian_jessie_default.7z 이미지 파일을 선택하고 선택한 SD Card에 이미지를 쓴다.
+![](/images/opensuse/etcher-image-writing.png){: width="600"}
 
-#### Write a image
 
-여기서 macOS를 사용하고 있다. 다운로드한 Debian_jessie_default.7z 이미지를 압축 해제하고, SD Card를 슬롯에 넣고, SD Card의 디스크 번호를 확인하고, 마운트를 해제한다.
+#### dd 사용
 
-```bash
+다운로드한 Debian_jessie_default.7z 이미지를 압축 해제하고, SD Card를 슬롯에 넣고, SD Card의 디스크 번호를 확인하고, 마운트를 해제한다.
+
+여기서 macOS를 사용하고 Disk Utility 를 이용한다.
+
+```terminal
 $ diskutil list                           #디스크 번호 확인
 $ diskutil unmountDisk /dev/disk1         #마운트 해제
 ```
 
 dd를 사용해 오에스이미지를 쓴다.
 
-```
+```terminal
 $ sudo dd if=Debian_jessie_default.img of=/dev/rdisk1 bs=1M conv=fsync
 ```
 
@@ -87,7 +90,7 @@ $ sudo dd if=Debian_jessie_default.img of=/dev/rdisk1 bs=1M conv=fsync
 
 오에스 이미지 파일의 md5 값과 디스크에 쓴 이미지의 해시 값을 비교할 수 있다.
 
-```
+```terminal
 $ sudo dd if=</dev/path/of/card> bs=512 count=$((`stat -c%s <my/odroid/image.img>`/512)) | md5sum
 167742+0 records in
 167742+0 records out
@@ -103,7 +106,20 @@ $ dd if=<my/odroid/image.img> bs=512 count=$((`stat -c%s <my/odroid/image.img>`/
 
 두 값이 일치해야 한다.
 
-### 첫번째 로그인
+OS를 쓴 SD Card 로 부팅하고 시스템 구성과 설정을 할 수 있다. 사용자 인터페이스로 사용하기 위해 HDMI, Keyboard 그리고 마우스가 필요하다.
+
+만약 GUI 인터페이스 사용이 여의치 않으면 다음 같이 Serial Console을 이용해 접근할 수 있다.
+
+#### Serial Console 이용
+
+Odroid C2는 아래 같이 Serial Port 를 제공하고 있다. [^1]
+
+![](/images/odroid/odroidc2-uart.png){: width="6400"}
+<figure>[그림. Odroid C2 의 UART (그림. wiki.odroid.com)]</figure>
+
+
+
+### 시스템 설정
 
 기본 아이디 root / 1234 로 로그인 가능하고 즉시 비밀번호를 변경해야 한다. 또한 사용자 계정을 만들어 사용해야 한다.
 
@@ -146,7 +162,7 @@ Please use this account for your daily work from now on.
 ```
 
 
-### upgrade 
+#### upgrade 
 
 ```
 # apt update && apt dist-upgrade && apt upgrade
@@ -184,8 +200,6 @@ Setting up linux-image-c2 (94-1) ...
 Linux odroid64 3.14.79-94 #1 SMP PREEMPT Mon Nov 21 17:13:27 BRST 2016 aarch64 aarch64 aarch64 GNU/Linux
 ```
 
-
-### 설정
 
 #### hostname
 
@@ -225,7 +239,7 @@ $ sudo apt install bash-completion --reinstall
 ```
 
 
-###  Swap 추가
+####  Swap 추가
 
 여유 디스크에 swap을 추가하려면 
 
@@ -255,6 +269,7 @@ rm /swapfile
 ```
 
 
+<br>
 ## Ubuntu 16.04 설치
 
 Micro SD Card를 사용하면 가능하면 **UHX-1 Class 10** 를 사용하도록 한다.
@@ -475,7 +490,6 @@ sudo apt install tightvncserver
 
 ```
 vncserver
-
 ```
 
 
@@ -491,5 +505,10 @@ https://github.com/garabik/grc
 
 
 ## 참조
+
  - [sudo user create](> https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart)
  - [armbian docs](https://docs.armbian.com)
+
+[^1]:https://wiki.odroid.com/odroid-c2/hardware/hardware
+
+

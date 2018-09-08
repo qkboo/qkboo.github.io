@@ -615,6 +615,37 @@ $ sudo fail2ban-regex /var/log/auth.log /etc/fail2ban/filter.d/sshd.conf
 ```
 
 
+### lastb
+
+
+#### 실패한 로그인 시도
+
+[View Failed Login Attempts – lastb](https://www.guyrutenberg.com/2014/09/26/view-failed-login-attempts-lastb/) 참조.
+
+`-w` 로 사용자 이름을 출력하고 첫번째 열만 자른 후 정렬한 후, `uniq` 명령으로 중복되는 이름을 제거한 후 출력한다.
+
+```terminal
+$ sudo lastb -w | cut -d " " -f 1 | sort | uniq | less
+```
+
+
+
+이중에서 접속한 IP와 횟수를 출력한다.
+
+```
+$ sudo lastb -f /var/log/btmp.1 -w -i | awk '{print $3}' | sort | uniq --count | sort -nr | less
+
+[sudo] root의 암호:
+   2166 112.85.42.156
+   1945 112.85.42.193
+   1591 112.85.42.201
+   1327 112.85.42.230
+   1146 112.85.42.196
+```
+
+
+
+
 ## 참조
 
  [^1]: [Ubuntu Server의 보안을 위해서 해야 할 것들 (Part 1)](https://davidhyk.github.io/blog/things-you-should-do-to-secure-ubuntu-part1)

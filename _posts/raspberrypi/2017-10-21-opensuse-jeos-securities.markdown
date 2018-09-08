@@ -38,7 +38,11 @@ ssh 사용시
 
 ### 방화벽 설정
 
-openSUSE는 SuSEfirewall2 가 기본으로 제공되어 서비스를 활성화 하면 사용할 수 있다. 아직 익숙치 않아서  SuSEFirewall2 을 우분투/데비안에서 익숙한 ufw 를 설치해 사용하겠다. 
+openSUSE 42.3까지 SuSEfirewall2 가 기본으로 제공되어 서비스를 활성화 하면 사용할 수 있다. 
+
+#### UFW
+
+SuSEFirewall2 을 우분투/데비안에서 익숙한 ufw 를 사용할 수 있다.
 
 
 ```
@@ -98,17 +102,6 @@ https://en.opensuse.org/SDB:SSH_systematic_attack_protection
 
 https://www.howtoforge.com/fail2ban_opensuse10.3
 
-
-
-
-### ssh
-
-
-### ufw
-
-
-
-### fail2ban
 
 zypper in fail2ban
 

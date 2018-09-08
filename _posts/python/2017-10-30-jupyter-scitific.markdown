@@ -1,10 +1,14 @@
 ---
-title: Python - 과학계산을 위한 Jupyter
+title: Python - 과학계산을 위한 Jupyter(Armbian)
 date: 2017-10-30 09:00:00 +0900
 layout: post
 tags: [python, virtualenv, virtualenvwrapper, jupyter, jupyter-notebook]
 categories: [Linux, Programming]
 ---
+
+Debian 계열의 ARM CPU를 위한 **Armbian** 에서 과학계산을 위한 Jupyter 설치 및 구성까지 요약하고 있다.
+
+https://packaging.python.org/guides/installing-scientific-packages/
 
 ## 과학계산을 위한 Python Jupyter
 
@@ -23,7 +27,26 @@ Python과 Virtualenv 환경을 더 알고 싶으면 다음 두 링크에 자세�
 
 #### Python 3 설치
 
-openSUSE 는 python3 설치후 마지막으로 `update-alternatives` 를 이용해 `pip` 를 pip3 로 연결해 준다. 
+
+
+#### 시스템 개발 패키지 설치
+
+컴파일에 필요한 헤더 등이 포함된 개발자 라이브러리를 설치한다.
+
+```
+sudo apt-get install build-essential
+sudo apt-get install python-dev python-distlib python3-dev python3-distlib
+```
+
+python-dev, python-distlib, apython-setuptools 은 파이썬 개발과 패키징을 지원한다.
+
+
+
+#### pip 설치
+
+apt-get install python3-pip
+
+python3 설치후 마지막으로 `update-alternatives` 를 이용해 `pip` 를 pip3 로 연결해 준다. 
 
 다른 배포본에서 필요시 update-alternatives 사용:
 
@@ -31,7 +54,17 @@ openSUSE 는 python3 설치후 마지막으로 `update-alternatives` 를 이용�
 sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 30
 ```
 
-#### pip User Scheme
+#### 라이브러리 설치
+
+```
+sudo apt-get install libzmq3-dev
+```
+
+libzmq3-dev은 쥬피터 노트북에서 필요로 한다.
+
+- python-curses: Python이 (N)Curses Libr에 대한 인터페이스이다
+
+#### Scientific stack - `pip`
 
 Python2.6부터 User scheme 개념이 도입되며서 `pip`로 설치하는 패키지를 개별 사용자 환경 위치에 설치할 수 있다. 
 
@@ -42,34 +75,16 @@ install 명령에 `--user` 옵션을 주고 설치한다.[^2]
 그리고 `PATH` 에 *~/.local/bin* 을 추가한다.
 
 
-#### 시스템 개발 패키지 설치
 
-컴파일에 필요한 헤더 등이 포함된 개발자 라이브러리를 설치한다.
+xlsx 파일을 위해 xlrd 패키지 설치
 
-```
-sudo apt-get install build-essential python-dev python-distlib 
-sudo apt-get install python3-dev python3-distlib
-```
-
-python-dev, python-distlib, apython-setuptools 은 파이썬 개발과 패키징을 지원한다.
-
-```
-sudo apt-get install libzmq3-dev
-```
-
-libzmq3-dev은 쥬피터 노트북에서 필요로 한다.
-
-다만, **openSUSE 에서**는 curses 관련 파이썬 모듈을 설치해야 한다.
-
-```
-zypper in python-curses python3-curses
-```
- - python-curses: Python이 (N)Curses Libr에 대한 인터페이스이다
+pip install -U --user xlrd
 
 
-#### Scientific stack
 
-과학계산을 지원하는 Python 패키지를 설치한다.
+#### Scientific stack - `apt`
+
+과학계산을 지원하는 Python2 모듈을 시스템 패키지에 `apt` 로 설치할 수 있다.
 
 ```sh
 $ sudo apt-get install python-numpy python-decorator python-scipy
@@ -143,19 +158,28 @@ libgdal-dev 은 geopandas에서 geospatial analysis 에 필요하다.
 sudo apt-get install python-pandas python3-pandas
 ```
 
+
 <br>
 ### Jupyter Notebook
 
 Jupyter는 웹 브라우저를 통해서 IDE 환경을 제공하고, 다양한 언어/문법을 지원하는 Kernel 이라는 해석기를 통해 IDE에서 코딩한 결과를 확인할 수 있다. 
 
 여기서는 가상환경을 구성해 Jupyter 관련 패키지를 설치하고 사용하겠다.
-
+ - 시스템에 설치된 Python3 와 pip 모듈
+ 
 #### virtualenv 와 virtualenvwrapper
 
-pip 를 업그레이드하고, 가상 개발환경에서 쥬피터 관련 모듈을 설치하고 관리하기 위해 `pip`로 virtualenv, virtualenvwrapper 설치한다.
+pip 를 업그레이드하고, 가상 개발환경에서 쥬피터 관련 모듈을 설치하고 관리하기 위해 `pip`로 virtualenv, virtualenvwrapper 설치한다. 
 
+시스템 `pip` 모듈을 최신 버전으로 업그레이드한다.
+
+```terminal
+sudo pip install --upgrade pip
 ```
-pip install --upgrade pip
+
+그리고 virtualenv, virtualenvwrapper 설치하는데, 사용자의 `.local` 폴더에 설치하도록 한다.
+
+```terminal
 pip install --user virtualenv virtualenvwrapper
 ```
 
@@ -180,7 +204,7 @@ source $HOME/.local/bin/virtualenvwrapper.sh
 
 다음은 `mkvirtualenv` 명령으로 *jupyter*라는 가상환경을 *python3*, 시스템 패키지 사용을 위해 *--system-site-packages* 옵션으로 생성한다.
 
-```sh
+```terminal
 mkvirtualenv -p python3 --system-site-packages jupyter
 (jupyter) $
 (jupyter) $ python --version
@@ -207,6 +231,25 @@ Python 3.4.6
 > $ sudo pip install jupyter geopandas osmnx
 
 `jupyter-notebook`을 실행해 보고, 서버 관련 구성 내용을 설정해서 사용해 보자.
+
+##### Upgrade jupyter
+
+여기서는 pip 가상머신을 이용하고 있어서 다음 같이 pip install 명령으로 업그레이드 할 수 있다.
+
+```terminal
+(jupyter)$ pip install -U jupyter
+```
+
+virtualenv, virtualenvwrapper는 여기서 사용자 .local 환경에 설치했으므로 
+
+```terminal
+pip install -U --user virtualenv virtualenvwrapper
+```
+
+pip3 freeze —local > requirements.txt
+
+
+
 
 #### 서버로 실행
 
@@ -251,7 +294,7 @@ Out[2]: 'sha1:67c9e60bb8b6:9ffede0825894254b2e043ea597d771089e11eed'
 
 #### 데이터 설정 파일
 
-먼저 다음 같이 설정 파일을 생성한다.
+다음 같이 설정 파일을 생성해서 사용할 수 있다.
 
 ```sh
 $ jupyter notebook --generate-config
@@ -262,7 +305,7 @@ $ cd .jupyter && mv jupyter_notebook_config.py mynotebook.py
 *mynotebook.py*에 다음을 설정한다.
 
 ```
-#c.NotebookApp.notebook_dir = '/path/to/notebook_directory'
+## The base URL for the notebook server.
 c.NotebookApp.base_url = 'http://www.yourdomain.com/notebok'
 c.NotebookApp.password = ''
 c.NotebookApp.port = 8000
@@ -278,7 +321,7 @@ c.NotebookApp.password = 'sha1:4ee6bb2da3d7:ed76216b87228540e5f5f20fcfa8069cf826
 설정 파일을 이용해 jupyter-notebook을 실행한다.
 
 ```sh
-$ jupyter-notebook --config .jupyter/mybook_config.py [DIR]
+$ jupyter notebook --config .jupyter/mybook_config.py [DIR]
 ```
 
 이제 jupyter에 접속하려면 다음 같이 패스워드를 묻고 입력한 후에 사용할 수 있다.
@@ -317,6 +360,13 @@ nohup 과 결합해서 사용해도 좋은 방법으로 crontab 을 사용해 �
 
 systemd unit으로 새로운 unit 파일을 생성해서 기존 `systemctl` 명령으로 시작/상태/종료/재시작 등의 작업을 할 수 있다. 물론 재시동 관련해서도 완벽히 동작한다.
 
+우선 jupyter-notebook 명령의 절대 경로를 찾아서 이 위치를 유닛 파일의 Exec 명령에 사용한다.
+
+```terminal
+$ which jupyter-notebook
+/home/foo/.local/bin/jupyter-notebook
+```
+
 systemd의 unit 위치는 OS 마다 조금 다른 것 같다. 여기서는 */etc/systemd/system* 밑에 *jupyter.service* 라는 유닉 파일로 직접 작업한다.
 
  - /etc/systemd/system/jupyter.service
@@ -331,7 +381,7 @@ Description=My Jupyter-Notebook
 [Service]
 Type=simple
 PIDFile=/run/jupyter-notebook.pid
-ExecStart=/home/foo/.virtualenvs/jupyter/bin/jupyter-notebook --config=/home/foo/.jupyter/mynotebook.py
+ExecStart=/home/foo/.local/bin/jupyter-notebook --config=/home/foo/.jupyter/mynotebook.py
 User=foo
 Group=foo
 WorkingDirectory=/home/foo/notebooks
@@ -350,6 +400,19 @@ systemctl daemon-reload
 systemctl restart jupyter.service
 ```
 
+
+현재 서버의 열린 포트는 다음 같이 `netstat` 명령으로 확인이 가능하다. 세번째 컬럼 처럼 `127.0.0.1` 에 열리면 외부에서 접근이 안된다.
+
+```terminal
+$ netstat -tlnp
+tcp        0      0 127.0.0.1:8585          0.0.0.0:*              LISTEN      11906/python3
+```
+
+
+```terminal
+$ netstat -tlnp
+tcp        0      0 0.0.0.0:8585          0.0.0.0:*              LISTEN      11906/python3
+```
 
 
 ## 참조

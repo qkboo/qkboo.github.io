@@ -2,8 +2,8 @@
 title: MongoDB - Database와 User Authentication
 date: 2017-04-20 09:00:00 +0900
 layout: post
-description: "ubuntu, debian에 mongodb 3 을 설치한다. mongdb community edition 3.6 버전을 우분투, 데비안 시스템 혹은 클라우드 서버에 설치하는 과정을 담고 있다"
-tags: [linux, mongodb, armbian, odroid-c2, ubuntu, debian, arm64, amd64, "우분투", "데이안"]
+description: "ubuntu, debian에 mongodb 3을 설치하고 데이터베이스 생성 및 사용자 인증을 다루고 있다"
+tags: [linux, mongodb, armbian, odroid-c2, ubuntu, debian, arm64, amd64, "우분투", "데비안"]
 categories:
 - Linux
 - Database
@@ -12,7 +12,9 @@ categories:
 > 2018-06-21 설치 링크로 대체
 {:.right-history}
 
-MongoDB 설치후 데이터베이스 위치, 로그, 인증 등에 관련한 서버 구성과 설정을 정리한다. MongoDB 2.6 과 MongoDB Community Edition 3.x 버전을 사용했다.
+MongoDB 설치후 데이터베이스 위치, 로그, 인증 등에 관련한 서버 구성과 설정을 정리한다. 
+
+> MongoDB 2.6 과 MongoDB Community Edition 3.x 버전을 사용했다.
 
 ## mongoDB 접근제어
 
@@ -31,45 +33,15 @@ Ubuntu/Debian 리눅스 배포본에 MongoDB 3.x 버전이 지원되지 않으�
 
 ### 데이터베이스 관리자
 
-비인증 모드로 MongoDB를 시작하기 위해 명령라인 `mongod`를 다음 같이 비인증 모드로 시작할 수 있다.
+mongod가 **비인증 모드로 실행**중인 상태에서, `mongo` 클라이언트로 데이터베이스에 접속한다.접속에 성공하면 **>** 프롬프트가 표시된다. 그리고 접속한 후에 *admin* 데이터베이스로 전환한다.
 
 ```terminal
-mongod --port 27017 --dbpath /data/db1
-```
-
-또는 *systemd* 사용시에는 *mongod.conf* 파일에 `security.authorization` 없이  MongoDB 서비스를 재시작 한다.
-
-```terminal
-sudo systemctl restart mongod.service
-sudo systemctl status mongod.service
-```
-
-이어서 클라이언트로 데이터베이스에 접속한다.접속에 성공하면 **>** 프롬프트가 나온다.
-
-```terminal
-$mongo
+> use admin
+switched to db admin
 >
 ```
 
-`mongo` 클라이언트로 접속해 mongoDB 데이터베이스 관리자 추가를 위해 **admin** 데이터베이스 사용자에 `userAdminAnyDatabase` 롤을 추가해준다.
-
-#### mongoDB 2.4 이전 관리자 계정 추가
-
-mongoDB 2.4 까지는 새로운 사용자는  `db.addUser()` 로 추가한다.[^1]
-
-```terminal
-$ mongo     // mongo client 로 접속
->use admin  // admin DB 사용
->db.addUser( { user: "<username>", // admin name
-              pwd: "<password>",
-              roles: [ "userAdminAnyDatabase" ] // Database role
-          } )
-```
-
-> mongoDB 2.6까지 32bit 버전을 지원하고 있다.
-
-[^1]: [Add User Administrator(v2.4 )](https://docs.mongodb.com/v2.4/tutorial/add-user-administrator/)
-
+`mongo` 클라이언트로 접속해 mongoDB 데이터베이스 관리자 **admin** 추가해서, 사용자 롤로 `userAdminAnyDatabase` 롤을 추가해준다.
 
 #### mongoDB 2.6 이후 관리자 계정 추가
 
@@ -77,9 +49,7 @@ mongoDB 2.6 이후는 `db.createUser()` 로 사용자를 추가한다. [^2]
 다음은 admin 데이터베이스에서 사용자를 관리하는 admin 계정을 생성하고 있다.
 
 ```terminal
-$ mongo     // mongo client 로 접속
-> use admin
-switched to db admin
+>
 > db.createUser({ user:'admin', 
                    pwd:'****', 
                    roles:['userAdminAnyDatabase']
@@ -105,55 +75,31 @@ Successfully added user: { "user" : "admin", "roles" : [ "userAdminAnyDatabase" 
 
 [^2]: [Enable Authentication after Creating the User Administrator(v2.6)](https://docs.mongodb.com/v2.6/tutorial/enable-authentication-without-bypass/)
 
-#### mongoDB v2.4 인증모드로 시작
+#### mongoDB 2.4 이전 관리자 계정 추가
 
+mongoDB 2.4 까지는 새로운 사용자는  `db.addUser()` 로 추가한다.[^1]
 
-mongoDB v2.4는 다음 같이 인증 모드로 시작한다. `mongod` 명령라인에서 `--auth` 옵션을 붙여 DB 인스턴스(`mongod`)를 시작 혹은 재시작한다.
-
-
-```sh
-$ mongod --auth --port 27017 --dbpath /data/db1
-Thu Jul 16 15:40:19 [initandlisten] MongoDB starting : pid=18189 portrayed=27017 dbpath=/data/db1/ 32-bit
+```terminal
+$ mongo     // mongo client 로 접속
+>use admin  // admin DB 사용
+>db.addUser( { user: "<username>", // admin name
+              pwd: "<password>",
+              roles: [ "userAdminAnyDatabase" ] // Database role
+          } )
 ```
 
-혹은  *mongod.conf* 설정 파일에서 **auth** 를 활성화 한다.
+> mongoDB 2.6까지 32bit 버전을 지원하고 있다.
 
-```
-auth = true
-```
-
-auth 모드로 시작한 후에 다음 같이 인증 정보없이 로그인 하면 데이터베이스 사용시 에러를 만난다.
-
-```js
-$ mongo
-> show dbs;
-Tue Sep 27 23:22:40.683 listDatabases failed:{ "ok" : 0, "errmsg" : "unauthorized" } at src/mongo/shell/mongo.js:46
->
-> show users
-Tue Sep 27 23:22:44.667 error: { "$err" : "not authorized for query on test.system.users", "code" : 16550 } at src/mongo/shell/query.js:128
-```
+[^1]: [Add User Administrator(v2.4 )](https://docs.mongodb.com/v2.4/tutorial/add-user-administrator/)
 
 
-#### mongoDB v2.6 이후
+관리자 계정을 만든후 MongoDB에 `mongo` 클라이언트로 인증 로그인을 한 후에 데이터베이스를 생성하고 해당 데이터베이스 사용자에 접근 권한을 추가해 준다.
 
-`mongod` 명령라인으로 시작할 수 있다.
-
-```sh
-$ mongod --auth --port 27017 --dbpath /data/db1
-```
+### 데이터 베이스 생성과 롤 기반 인증
 
 
-mongoDB v2.6 이후에서 *mongod.conf* 파일 사용할 때는, *mongod.conf* 에 `security.authorization` 를 활성화 한다. 
 
-systemd 로 mongoDB 서비스를 재시작 한다.
-
-```sh
-$ sudo systemctl restart mongod.service
-$ sudo systemctl status mongod.service
-```
-
-
-#### 인증 로그인
+#### 관리자 로그인
 
 이제 데이터베이스 관리자 계정으로 로그인해서 사용하려는 데이터베이스를 `use`로 선택하고 해당 데이터베이스 사용자를 추가해준다.
 
@@ -185,26 +131,69 @@ switched to db admin
 
 
 
-#### 원격지에서 접근
-
-외부에서 mongodb로 접근시 authentication을 적용한 상태라면 다음과 같은 URL로 접근할 수 있다:
-
-> "username:password@HOST_NAME/mydb"
-
-
-> 그러나 외부접근시 클라이언트 버전과 서버의 Credential 버전이 맞지 않은 경우 다음 같이 실패 메시지를 확인할 수 있다.
-> 
-> 2016-05-16T00:53:10.338+0900 I ACCESS   [conn2] Failed to authenticate student@student with mechanism MONGODB-CR: AuthenticationFailed: MONGODB-CR credentials missing in the user document
-> 2016-05-16T00:53:10.352+0900 I NETWORK  [conn2] end connection 220.121.140.59:51634 (0 connections now open)
-> 
-
-
 이제 각 데이터베이스에 사용자를 생성해서 사용해서 인증한 사용자만 데이터베이스를 사용하게 할 수 있다. 
 
 
 ### Database 사용자 추가
 
-mongoDB v2.4와 그 이후는 사용자 추가 방법이 조금 다르다.
+
+#### mongoDB v3.x 사용자 관리
+
+mongoDB v2.6 히우는 대부분 mongoDB v3.4와 호환되는 사용자 관리 명령을 사용한다. 여기서는 [User Management Methods (v3.4)](https://docs.mongodb.com/manual/reference/method/js-user-management/)를 참고하고 있다.
+
+
+| Name | Description |
+| ----------------- | --------------------------------------|
+| db.auth() | 데이터베이스에 사용자 인증 |
+| db.createUser() | Creates a new user. |
+| db.updateUser() | Updates user data. |
+| db.changeUserPassword() | 사용자 패스워드 변경 |
+| db.dropAllUsers() | 데이터베이스에 관련된 모든 사용자를 삭제한다. |
+| db.dropUser() | 한 사용자를 삭제한다 |
+| db.grantRolesToUser() | 롤과 권한을 사용자에 허용한다 |
+| db.revokeRolesFromUser() | 사용자에 부여한 롤을 삭제한다 |
+| db.getUser() | 지정한 사용자의 정보를 반환한다|
+| db.getUsers() | 데이터베이스에 관련된 모든 사용자의 정보를 반환한다 |
+
+
+#### createUser()
+
+`db.createUser()` 는 두 개의 도큐멘트를 인자로 사용한다:
+
+> db.createUser(user, writeConcern)
+
+여기서 **user** 도큐멘트는 아래 같은 형식을 갖는다:
+
+```json
+{ user: "<name>",
+  pwd: "<cleartext password>",
+  customData: { <any information> },
+  roles: [
+    { role: "<role>", db: "<database>" } | "<role>",
+    ...
+  ]
+}
+```
+ - **customData**: 선택적으로 추가할 정보를 담은 도큐멘트.
+
+다음은 *product* 데이터베이스로 전환해서 *product* 데이터베이스 사용자를 추가하고 있다. *customeData* 를 주목하자.
+
+```terminal
+> use products
+db.createUser( { user: "user1",
+                 pwd: "changeMe",
+                 customData: { employeeId: 12345 }, // prducts 
+                 roles: [ { role: "clusterAdmin", db: "admin" },
+                          { role: "readAnyDatabase", db: "admin" },
+                          "readWrite"] },
+               { w: "majority" , wtimeout: 5000 } )
+```
+
+다양한 사례는 [createUser() Exmaple](https://docs.mongodb.com/manual/reference/method/db.createUser/#examples) 를 참고하자.
+
+
+
+mongoDB v2.4는 사용자 추가 방법이 조금 다르다.
 
 #### mongoDB v2.4 사용자 추가
 
@@ -253,61 +242,6 @@ switched to db student
 Tue Sep 27 23:45:38.269 listDatabases failed:{ "ok" : 0, "errmsg" : "unauthorized" } at src/mongo/shell/mongo.js:46
 >
 ```
-
-
-### mongoDB v3.x 사용자 관리
-
-mongoDB v2.6 히우는 대부분 mongoDB v3.4와 호환되는 사용자 관리 명령을 사용한다. 여기서는 [User Management Methods (v3.4)](https://docs.mongodb.com/manual/reference/method/js-user-management/)를 참고하고 있다.
-
-
-| Name | Description |
-| ----------------- | --------------------------------------|
-| db.auth() | 데이터베이스에 사용자 인증 |
-| db.createUser() | Creates a new user. |
-| db.updateUser() | Updates user data. |
-| db.changeUserPassword() | 사용자 패스워드 변경 |
-| db.dropAllUsers() | 데이터베이스에 관련된 모든 사용자를 삭제한다. |
-| db.dropUser() | 한 사용자를 삭제한다 |
-| db.grantRolesToUser() | 롤과 권한을 사용자에 허용한다 |
-| db.revokeRolesFromUser() | 사용자에 부여한 롤을 삭제한다 |
-| db.getUser() | 지정한 사용자의 정보를 반환한다|
-| db.getUsers() | 데이터베이스에 관련된 모든 사용자의 정보를 반환한다 |
-
-
-#### createUser()
-
-`db.createUser()` 는 두 개의 도큐멘트를 인자로 사용한다:
-
-> db.createUser(user, writeConcern)
-
-여기서 **user** 도큐멘트는 아래 같은 형식을 갖는다:
-
-```json
-{ user: "<name>",
-  pwd: "<cleartext password>",
-  customData: { <any information> },
-  roles: [
-    { role: "<role>", db: "<database>" } | "<role>",
-    ...
-  ]
-}
-```
- - **customData**: 선택적으로 추가할 정보를 담은 도큐멘트.
-
-다음은 *product* 데이터베이스로 전환해서 *product* 데이터베이스 사용자를 추가하고 있다. *customeData* 를 주목하자.
-
-```js
-use products
-db.createUser( { user: "user1",
-                 pwd: "changeMe",
-                 customData: { employeeId: 12345 }, // prducts 
-                 roles: [ { role: "clusterAdmin", db: "admin" },
-                          { role: "readAnyDatabase", db: "admin" },
-                          "readWrite"] },
-               { w: "majority" , wtimeout: 5000 } )
-```
-
-다양한 사례는 [createUser() Exmaple](https://docs.mongodb.com/manual/reference/method/db.createUser/#examples) 를 참고하자.
 
 
 ## MongoDB에 관련 글

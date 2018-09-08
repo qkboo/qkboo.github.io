@@ -8,6 +8,8 @@ categories: [Linux, NodeJS]
 
 Node.js를 설치하고 관리할 수 있는 Node Version Manager를 사용한 개발환경 구성에 대해 살펴본다.
 
+> 2018-6 `npm i` 관련 설명 추가
+{:.right-history}
 
 
 ## 버전관리자를 통한 Node.js 개발환경
@@ -105,46 +107,6 @@ nvm alias default 6.9.1
 ```
 
 
-
-#### npm
-
-`node`를 설치후 `npm`을 업그레이드 해준다. npm 자체는 다음 같이 업그레이드 한다.
-
-```sh
-npm i -g npm
-npm install npm@latest -g
-```
-
-
-#### Outdated module
-
-현재 package.json 에 설치된 버전과 명시된 버전 그리고 최신 버전과 차이를 알 수 있다.
-
-```sh
-npm outdated
-Package                  Current  Wanted  Latest  Location
-body-parser               1.15.2  1.15.2  1.18.2  application-name
-debug                      0.7.4   0.7.4   3.1.0  application-name
-```
-
-최신 버전으로 설치를 하려면 package.json을 버전코드로 변경하고 업데이트를 진행한다.
-
-모든 패키지를 업데이트할 수 있다.
-
-```
-npm update
-+ mongoose@4.13.1
-added 1 package, removed 4 packages and updated 2 packages in 32.975s
-```
-
-특정 모듈만 업데이트하려면 패키지를 명시하면 된다.
-
-```
-npm update debug
-```
-
-
-
 #### lts 버전
 
 Node.js 는 가용 버전이 장기지원을 위해서 [LTS(Long Term Support)](https://github.com/nodejs/Release) 프로그램을 진행하고 있다. 실제 운영 서버는 이런 LTS 버전을 중심으로 가동될 것이다. **nvm** 도 lts 만을 선별해서 설치하고 관리할 수 있다.
@@ -217,7 +179,7 @@ C:\>setx /M NODIST_PREFIX "C:\users\thinkbee\nodist"
 
 이제 `cmd`에서 `nodist`의 업데이트를 실행해주고 사용한다.
 
-```
+```terminal
 C:\>nodist selfupdate
 ```
 
@@ -229,6 +191,71 @@ C:\>nodist selfupdate
 ### npm
 
 `npm` 은 nodejs 패키지 관리자로 선택한 모듈을 설치, 갱신 및 삭제할 수 있고, 스크립팅을 통해 프로세스 관리까지 할 수 있다.
+
+
+#### npm init
+
+```
+npm init -y[--yes]
+```
+
+이렇게 생성된 package.json 은,
+
+```json
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
+
+npm 으로 추가하는 모듈은 package.json에 의존성을 추가할 수 있다. `npm install --save` 별도의 플래그를 사용한다. 그리고 `--dev` 플래그를 주면 developer dependency에 추가해 준다.
+
+#### save
+
+npm < 5 이하 버전은 `-S` 혹은 `--save` 옵션으로 모듈 의존성을 *package.json* 에 추가한다.
+
+`node`를 설치후 `npm`을 업그레이드 해준다. npm 자체는 다음 같이 업그레이드 한다.
+
+```sh
+npm i -g npm
+npm install npm@latest -g
+```
+
+
+#### Outdated module
+
+현재 package.json 에 설치된 버전과 명시된 버전 그리고 최신 버전과 차이를 알 수 있다.
+
+```sh
+npm outdated
+Package                  Current  Wanted  Latest  Location
+body-parser               1.15.2  1.15.2  1.18.2  application-name
+debug                      0.7.4   0.7.4   3.1.0  application-name
+```
+
+최신 버전으로 설치를 하려면 package.json을 버전코드로 변경하고 업데이트를 진행한다.
+
+모든 패키지를 업데이트할 수 있다.
+
+```
+npm update
++ mongoose@4.13.1
+added 1 package, removed 4 packages and updated 2 packages in 32.975s
+```
+
+특정 모듈만 업데이트하려면 패키지를 명시하면 된다.
+
+```
+npm update debug
+```
+
 
 #### npm upgrade
 

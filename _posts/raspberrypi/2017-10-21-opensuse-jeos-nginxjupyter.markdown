@@ -367,6 +367,77 @@ its --ts-install=local
 ```
 
 
+### Jupyter-notebook Nginx 설정
+
+Jupyter-notebook 을 nginx 뒤에서 실행시 아래 같은 동작이 반복적으로 보이이면 
+
+```
+[I 19:26:48.843 NotebookApp] Adapting to protocol v5.1 for kernel 97e659cd-0509-4f56-878e-10e2c31803e2
+[I 19:26:48.853 NotebookApp] Restoring connection for 97e659cd-0509-4f56-878e-10e2c31803e2:b4d78dff5dff4563b0e5fc7195fefca1
+[I 19:26:48.881 NotebookApp] Starting buffering for 97e659cd-0509-4f56-878e-10e2c31803e2:b4d78dff5dff4563b0e5fc7195fefca1
+[I 19:26:51.904 NotebookApp] Adapting to protocol v5.1 for kernel 97e659cd-0509-4f56-878e-10e2c31803e2
+[W 19:26:51.930 NotebookApp] Replacing stale connection: 97e659cd-0509-4f56-878e-10e2c31803e2:b4d78dff5dff4563b0e5fc7195fefca1
+[W 19:26:51.957 NotebookApp] Replacing stale connection: 97e659cd-0509-4f56-878e-10e2c31803e2:b4d78dff5dff4563b0e5fc7195fefca1
+```
+
+[jupyter-notebook-keeps-reconnecting](https://stackoverflow.com/questions/42350182/jupyter-notebook-keeps-reconnecting-to-kernel) 설명 처럼 nginx proxy 에서 http 버전을 명시해 준다.
+
+If you are using jupyter behind a nginx proxy, this post may be effective.
+
+Add this line to nginx conf.
+
+```
+proxy_http_version 1.1;
+```
+
+[http_proxy_module](http://nginx.org/en/docs/http/ngx_http_proxy_module.html) 에 따르면 keepalive 를 사용하기 위해서 1.1 버전을 꼭 사용해야 할 것 같다.
+
+> Sets the HTTP protocol version for proxying. By default, version 1.0 is used. Version 1.1 is recommended for use with keepalive connections and NTLM authentication.
+
+참조용 jupyter-notebook conf
+
+```
+upstream my-notebook-workhorse {
+  server 127.0.0.1:8888 fail_timeout=0;
+}
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+# let my-notebook deal with the redirection
+server {
+  listen                    80;
+  server_name               my-notebook.wh;
+  server_tokens             off;
+  root                      /dev/null;
+
+  # Increase this if you want to upload larger attachments
+  client_max_body_size      20m;
+
+  # individual nginx logs for this vhost
+  access_log                /var/log/nginx/my-notebook_access.log;
+  error_log                 /var/log/nginx/my-notebook_error.log;
+
+  location / {
+    proxy_pass http://my-notebook-workhorse;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded_For $proxy_add_x_forwarded_for;
+    proxy_set_header X-NginX-Proxy true;
+    auth_basic "Restricted Content";
+
+    # WebSocket support
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Origin "";
+    proxy_read_timeout 86400;
+  }
+}
+```
+
 
 ## 참조
 
