@@ -1,11 +1,10 @@
 ---
 title: "Post: Gallery"
 categories:
-  - Post Formats
+  - Jekyll
 tags:
-  - gallery
-  - Post Formats
-  - tiled
+  - Jekyll
+
 gallery:
   - url: /assets/images/unsplash-gallery-image-1.jpg
     image_path: /assets/images/unsplash-gallery-image-1-th.jpg
