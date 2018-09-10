@@ -8,7 +8,12 @@ categories: [Raspberry Pi, Linux]
 
 SBC, PC 등의 머신에서 SD Card 사용에 필요한 사항을 정리했다.
 
-## SD Card
+> 2018-08-30: 전체 내용 편집
+> 2017-10-30: swap 추가, timezone 수정
+{:.right-history}
+
+<br>
+## SD Card 와 디스크 이미지 사용하기
 
 SD Card는 Secure Digital의 약자로 Flash memory(비휘발성) 카드 포맷이다.
 
@@ -16,29 +21,39 @@ SD Card는 Secure Digital의 약자로 Flash memory(비휘발성) 카드 포맷�
 
 ### SD Card format
 
-1.Windows, macOS
+1. Windows
 
-SD Association의 SD Formatter 를 이용한다.
+- Disk Utility를 이용한다.
+- SD Association의 SD Formatter 를 이용한다.
 
-2.Linux
+2. macOS
 
-터미널에서 `fdisk`, `parted` 명령으로 포맷할 수 있다.
+- Diskutility 앱을 이용한다.
+- SD Association의 SD Formatter 를 이용한다.
+
+3. Linux
+
+- `fdisk`, `parted` 명령으로 포맷할 수 있다.
+- `dd` 명령으로 
 
 
 #### macOS
 
-macOS는 Disk Utility 프로그램을 명령라인 `diskutil` 명령으로 파티션, 마운트 및 포맷을 할 수 있다.
+macOS는 Disk Utility 프로그램으로 디스크에 대한 파티션, 포맷 및 점검을 할 수 있다. GUI 윈도우를 제공하지만 명령줄에서 `diskutil` 명령으로 파티션, 마운트 및 포맷을 할 수 있다.
 
-`diskutil` 명령으로 목록과 파티션 마운트를 해제하고 `dd` 명령으로 디스크 지운다.
+명령줄에서 `diskutil` 명령으로 목록과 파티션 마운트를 해제하고 
 
 ```terminal
 $ diskutil list
 
 $ diskutil unmountDisk /dev/diskX
-
-$ sudo dd if=/dev/urandom of=/dev/diskX bs=1000000
 ```
 
+역시 `dd` 명령을 이용해 `/dev/zero`, `/dev/urandom` 을 디스크 전체에 써서 지울 수 있다.
+
+```terminal
+$ sudo dd if=/dev/urandom of=/dev/diskX bs=1000000
+```
 
 디스크 파티션은 `partitionDisk` 를 사용해서 파티션할 수 있다.
 
@@ -47,6 +62,7 @@ $ sudo diskutil partitionDisk <Disk> GPT| FAT|exFAT|JHFS+ NAME SIZE
 ```
 
  - SIZE: 0b 전체.
+
 
 #### Linux
 
@@ -100,35 +116,57 @@ $ sudo mkfs -V -t vfat /dev/mmcblk0p1
 ```
 
 
-### Check Bad sector
-
-터미널에서 SD Card 삽입/추출 및 점검시 섹터 에러를 확인하기 위해 `dmesg` 로 감시할 수 있다. 다음 명령은 dmesg 가 발생하면, 내용 중 마지막 15줄을 터미널로 출력해 준다.
+역시 `dd` 명령을 이용해 `/dev/zero`, `/dev/urandom` 을 디스크 전체에 써서 지울 수 있다.
 
 ```terminal
-$ watch "dmesg | tail -15"
+$ sudo dd if=/dev/zero of=/dev/diskX bs=4M
 ```
 
 
-#### `hdparam`
 
-[hdparam](https://wiki.archlinux.org/index.php/hdparm)
+### Disk clone
+
+Linux, macOS 에서 파티션 도구, `dd` 를 사용해서 디스크 전체, 혹은 파티션을 이미지로 추출해 생성하는 과정을 정리했다.
+
+#### `dd` 이용하기
+
+`dd` 로 디스크의 전체를 이미지 파일로 생성할 수 있다. 다만 디스크 전체 섹터를 추출하므로 디스크 용량과 같은 크기를 가진 이미지 파일이 생성된다. 
 
 ```terminal
-$ sudo hdparm -t /dev/mmcblk0
-
-/dev/mmcblk0:
- Timing buffered disk reads:  58 MB in  3.09 seconds =  18.80 MB/sec
+dd bs=4M if=/dev/sdX of=image.gz conv=fsync
 ```
 
 
-#### badblocks
+#### Ubuntu `gparted`
+
+우분투 Live CD에서 `gparted`는 가능한 사용하지 않는 공간은 빼고 최소 크기로 줄여 줄 수 있다.
+
+
+#### 압축 이용하기
+
+전체 디스크 크기의 이미지 파일이 너무 크면,  압축유틸리티를 이용해 저장할 수 있다.
 
 ```terminal
-$ sudo badblocks -n -v /dev/mmcblk0
+dd bs=4M count=<size_in_MBs> if=/dev/sdX | gzip -c --fast| dd of=image.gz
+dd bs=4M count=<size_in_MBs> if=/dev/sdX | xz -c --fast| dd of=image.xz
 ```
 
 
-### Image를 SD Card에 쓰기
+반대로 압축한 이미지 파일을 디스크로 복원하기 위해서 `unzip`, `gunzip`, `xz -d` 압축을 해제한 결과를 파이프로 `dd`로 전달한다.
+
+```terminal
+dd if=/path/to/image.gz | gunzip -c | dd bs=1M of=/dev/sdY
+dd if=/path/to/image.xz | xzcat | dd bs=1M of=/dev/sdY
+```
+
+
+#### macOS의 Disk Utility 이용
+
+GUI인 Disk Utility에서 SD Card 디스크를 선택하고 macOS의 *.dmg* 이미지 파일로 저장할 수 있고, 저장시 압축 선택이 가능하다.
+
+
+<br>
+### Disk Image를 SD Card에 쓰기
 
 각 OS에서 `dd` 같은 Disk clone 도구를 사용해서 디스크 이미지를 SD Card에 쓸 수 있다. 
 
@@ -160,41 +198,10 @@ $ xzcat openSUSE-Leap42.2-ARM-JeOS-raspberrypi3.aarch64.raw.xz | sudo dd of=/dev
 시스템 구성을 하고, 여러 설정을 한 후 백업, 복사 등을 위해, 설정한 OS 를 디스크 이미지로 복제하는 경우가 많아 이때는 `dd` 명령을 사용할 수 있다.
 
 
-### Disk clone
-
-Linux, macOS 에서 파티션 도구, `dd` 를 사용해서 디스크 전체, 혹은 파티션을 이미지로 추출해 생성하는 과정을 정리했다.
-
-
-#### Ubuntu `gparted`
-
-우분투 Live CD에서 `gparted`는 가능한 사용하지 않는 공간은 빼고 최소 크기로 줄여 줄 수 있다.
-
-
-#### 압축 이용하기
-
-`dd` 는 전체 섹터를 추출하므로 디스크 크기의 이미지가 생성된다. 그러므로 추출후 압축 혹은 생성하며 압축해 디스크 이미지로 쓴다.
-
-```terminal
-dd bs=1M count=<size_in_MBs> if=/dev/sdX | gzip -c --fast| dd of=image.gz
-dd bs=1M count=<size_in_MBs> if=/dev/sdX | xz -c --fast| dd of=image.xz
-```
-
-
-압축한 이미지 파일을 Sd Card 등에 복원하기 위해서 `unzip`, `gunzip`, `xz -d` 압축을 해제한 결과를 파이프로 `dd`로 전달한다.
-
-```terminal
-dd if=/path/to/image.gz | gunzip -c | dd bs=1M of=/dev/sdY
-```
-
-
-
-#### macOS의 Disk Utility 이용
-
-GUI인 Disk Utility에서 SD Card 디스크를 선택하고 macOS의 *.dmg* 이미지 파일로 저장할 수 있고, 저장시 압축 선택이 가능하다.
 
 
 <br>
-### 이미지 파일 파티션 확인하기
+### 이미지 파일 다루기
 
 백업한 디스크 이미지 파티션을 확인하고 폴더에 마운트해서 내용을 확인할 할 수 있다.
 
@@ -251,9 +258,7 @@ Number  Start         End           Size          Type     File system     Flags
 ```
 
 
-
-<br>
-### 이미지 마운트
+#### 이미지 마운트
 
 디스크 이미지는 리눅스에서 `mount` 명령으로 마운트 할 수 있다. mount 명령으로 실제 파티션이 시작하는 위치를 offset으로 지정해서 마운트 한다.
 
@@ -315,14 +320,14 @@ sudo losetup -o 4194304 /dev/loop0 sda.img
 
 Now the partition resides on /dev/loop0. You can fsck it, mount it etc
 
-```
+```terminal
 sudo fsck -fv /dev/loop0
 sudo mount /dev/loop0 /mnt
 ```
 
 Unmount
 
-```
+```terminal
 sudo umount /mnt
 sudo losetup -d /dev/loop0
 ```
@@ -334,7 +339,7 @@ sudo losetup -d /dev/loop0
 
 먼저 이미지 파티션 정보를 얻는다.
 
-```sh
+```terminal
 $ fdisk -lu image.img
 Disk image.img: 4096 MB, 4096000000 bytes, 8000000 sectors
 Units = sectors of 1 * 512 = 512 bytes
@@ -351,27 +356,62 @@ image.img1              2048     5872026     5869978    b  W95 FAT32
 
 `truncate` 도구로 현재 파티션에서 빈공간을 잘라낸다. 다만 블럭 수가 0에서 시작하므로 섹터 수에 *1*을 더해준다.[^2]
 
-```sh
+```terminal
 $ truncate --size=$[(5872026+1)*512] image.img
 ```
 
 
-### Repair
+### Repair & Corruption
 
 프롬프트에서 다음 명령으로 해당 파티션을 점검한다.
 
-```
+```terminal
 # fsck -fy /dev/mmcblk0p2
 # reboo
 ```
 
 혹은 다음 부팅시 처리할 수 있도록 한다.
 
-```
+```terminal
 # touch /forcefsck
 # reboot
 ```
 
+
+#### Check Bad sector
+
+터미널에서 SD Card 삽입/추출 및 점검시 섹터 에러를 확인하기 위해 `dmesg` 로 감시할 수 있다. 다음 명령은 dmesg 가 발생하면, 내용 중 마지막 15줄을 터미널로 출력해 준다.
+
+```terminal
+$ watch "dmesg | tail -15"
+```
+
+
+#### `hdparam`
+
+[hdparam](https://wiki.archlinux.org/index.php/hdparm)
+
+```terminal
+$ sudo hdparm -t /dev/mmcblk0
+
+/dev/mmcblk0:
+ Timing buffered disk reads:  58 MB in  3.09 seconds =  18.80 MB/sec
+```
+
+
+#### badblocks
+
+```terminal
+$ sudo badblocks -n -v /dev/mmcblk0
+```
+
+
+
+#### Recovering
+
+GNU ddrescue is a data recovery tool. It copies data from one file or block device (hard disc, cdrom, etc) to another, trying to rescue the good parts first in case of read errors.
+
+https://www.gnu.org/software/ddrescue/
 
 
 ## 참조
