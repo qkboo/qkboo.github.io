@@ -115,6 +115,36 @@ $ time sudo dd bs=1024 if=1GB_file of=/dev/null
 ```
 
 
+#### Verbose output
+
+Sending an INFO signal to a running dd process makes it print I/O statistics to standard error and then resume copying. In the example below, dd is run in the background to copy 10 million blocks. The kill command makes it output intermediate I/O statistics, and when dd completes normally or is killed by the SIGINT signal, it outputs the final statistics.
+
+```terminal
+ $ dd if=/dev/zero of=/dev/null count=10MB & pid=$!
+ $ kill -s INFO $pid; wait $pid
+ 3385223+0 records in
+ 3385223+0 records out
+ 1733234176 bytes (1.7 GB) copied, 6.42173 seconds, 270 MB/s
+ 10000000+0 records in
+ 10000000+0 records out
+ 5120000000 bytes (5.1 GB) copied, 18.913 seconds, 271 MB/s
+```
+
+On systems lacking the INFO signal dd responds to the USR1 signal instead, unless the POSIXLY_CORRECT environment variable is set.
+
+You can also try the status=progress option:
+
+```terminal
+[~]$ dd if=/dev/zero of=/dev/null count=10MB status=progress
+4708234752 bytes (4.7 GB, 4.4 GiB) copied, 4 s, 1.2 GB/s
+10000000+0 records in
+10000000+0 records out
+5120000000 bytes (5.1 GB, 4.8 GiB) copied, 4.3516 s, 1.2 GB/s
+[~]$ 
+```
+
+
+
 ##### 참조 
  - http://askubuntu.com/questions/511467/how-can-i-completely-erase-all-data-on-a-micro-sd-card
 

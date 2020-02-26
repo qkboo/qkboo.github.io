@@ -6,24 +6,16 @@ tags: [python, virtualenv, virtualenvwrapper, jupyter, jupyter-notebook]
 categories: [Linux, Programming]
 ---
 
-Debian 계열의 ARM CPU를 위한 **Armbian** 에서 과학계산을 위한 Jupyter 설치 및 구성까지 요약하고 있다.
+Odroid C2, Raspberry Pi 계열의 ARM CPU를 위한 **Armbian** 에서 과학계산을 위한 Jupyter 설치 및 구성까지 요약하고 있다.
 
 https://packaging.python.org/guides/installing-scientific-packages/
 
 ## 과학계산을 위한 Python Jupyter
 
-과학계산을 위한 Python 과 Jupyter Notebook 환경을 정리한다. 
+과학계산을 위한 Python 모듈을 시스템 패키지로 설치하고 `pip` 를 사용해서 Jupyter Notebook 을 설치하고 사용하는 과정을 정리했다.
+
  - 개발 프론트 엔드: Jupyter
- - 과학계산 모듈: numpy, scipy 등
-
-Python과 Virtualenv 환경을 더 알고 싶으면 다음 두 링크에 자세한 설명이 있다.
- - [Python - Install virtualenv on Linux]({% post_url /python/2017-04-03-virtualenv-linux %})
-
-### 공개 사이트
-
-1. [Google Colaboratory](https://colab.research.google.com/)
-2. nbview
-3. 
+ - 과학계산 모듈: numpy, scipy, pandas
 
 
 ### Setup
@@ -31,10 +23,6 @@ Python과 Virtualenv 환경을 더 알고 싶으면 다음 두 링크에 자세�
 시스템에 Python2, Python3 가 설치되었는지 확인:
  - Ubuntu/Debian 계열: Python 2.7, Python 3.5 설치되어 있다.
  - openSUSE : Python2.7
-
-#### Python 3 설치
-
-
 
 #### 시스템 개발 패키지 설치
 
@@ -48,10 +36,13 @@ sudo apt-get install python-dev python-distlib python3-dev python3-distlib
 python-dev, python-distlib, apython-setuptools 은 파이썬 개발과 패키징을 지원한다.
 
 
-
 #### pip 설치
 
+배포본에 pip가 설치되어 있지 않으면 
+
+```
 apt-get install python3-pip
+```
 
 python3 설치후 마지막으로 `update-alternatives` 를 이용해 `pip` 를 pip3 로 연결해 준다. 
 
@@ -61,48 +52,17 @@ python3 설치후 마지막으로 `update-alternatives` 를 이용해 `pip` 를 
 sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 30
 ```
 
+
 #### 라이브러리 설치
-
-```
-sudo apt-get install libzmq3-dev
-```
-
-libzmq3-dev은 쥬피터 노트북에서 필요로 한다.
-
-- python-curses: Python이 (N)Curses Libr에 대한 인터페이스이다
-
-#### Scientific stack - `pip`
-
-Python2.6부터 User scheme 개념이 도입되며서 `pip`로 설치하는 패키지를 개별 사용자 환경 위치에 설치할 수 있다. 
-
-install 명령에 `--user` 옵션을 주고 설치한다.[^2] 
- - 기본으로 리눅스는 *~/.local* 폴더이고, 
- - Mac OS X 는 *~/Library/Python/X.Y* 에 위치한다.[^3]
-
-그리고 `PATH` 에 *~/.local/bin* 을 추가한다.
-
-
-
-xlsx 파일을 위해 xlrd 패키지 설치
-
-pip install -U --user xlrd
-
 
 
 #### Scientific stack - `apt`
 
-과학계산을 지원하는 Python2 모듈을 시스템 패키지에 `apt` 로 설치할 수 있다.
+시스템 패키지로 과학계산을 지원하는 Python2, Python3 모듈을 설치.
 
 ```sh
-$ sudo apt-get install python-numpy python-decorator python-scipy
-$ sudo apt-get install python-matplotlib
-```
-
-Python3 패키지도 설치한다.
-
-```sh
-$ sudo apt-get install python3-decorator python3-numpy python3-scipy
-$ sudo apt-get install python3-matplotlib
+$ sudo apt-get install python-numpy python-decorator python-scipy python-matplotlib
+$ sudo apt-get install python3-decorator python3-numpy python3-scipy python3-matplotlib
 ```
 
 symbolic mathematics 관련 패키지도 설치한다.
@@ -112,16 +72,16 @@ sudo apt-get install python-sympy python-nose
 sudo apt-get install python3-sympy python3-nose
 ```
 
-설치되고 사용이 가능한지 확인한다. 다음 두 모듈이 없으면 jupyter 설치가 제대로 안된다.
+설치되고 사용이 가능한지 확인한다. 다음 두 모듈 *numpy*, *scipy* 의 버전이 출력되면 된다.
 
 ```sh
 python -c "import numpy;print(numpy.__version__)"
-1.9.3
+1.12.1
 ```
 
 ```sh
-python -c "import numpy;print(numpy.__version__)"
-0.16.0
+python -c "import scipy;print(scipy.__version__)"
+0.18.1
 ```
 
 
@@ -145,6 +105,8 @@ sudo apt-get install python-requests python-pil python-scrapy python-geopy pytho
 ```
 
 Python3
+
+> pil -> Pillow
 
 ```sh
 sudo apt-get install python3-requests python3-pil python3-scrapy python3-geopy python3-shapely python3-pyproj
@@ -171,99 +133,58 @@ sudo apt-get install python-pandas python3-pandas
 
 Jupyter는 웹 브라우저를 통해서 IDE 환경을 제공하고, 다양한 언어/문법을 지원하는 Kernel 이라는 해석기를 통해 IDE에서 코딩한 결과를 확인할 수 있다. 
 
-여기서는 가상환경을 구성해 Jupyter 관련 패키지를 설치하고 사용하겠다.
+Jupyter 관련 모듈을 `pip`로 사용자 환경에 설치하고 사용하겠다.
  - 시스템에 설치된 Python3 와 pip 모듈
- 
-#### virtualenv 와 virtualenvwrapper
 
-pip 를 업그레이드하고, 가상 개발환경에서 쥬피터 관련 모듈을 설치하고 관리하기 위해 `pip`로 virtualenv, virtualenvwrapper 설치한다. 
 
-시스템 `pip` 모듈을 최신 버전으로 업그레이드한다.
+```
+sudo apt-get install libzmq3-dev
+```
+
+libzmq3-dev은 쥬피터 노트북에서 필요로 한다.
+
+
+#### `pip`
+
+먼저 pip를 업그레이드 해준다.
 
 ```terminal
-sudo pip install --upgrade pip
+$ sudo pip install -U pip
 ```
 
-그리고 virtualenv, virtualenvwrapper 설치하는데, 사용자의 `.local` 폴더에 설치하도록 한다.
+
+Python2.6부터 User scheme 개념이 도입되며서 `pip`로 설치하는 패키지를 개별 사용자 환경 위치에 설치할 수 있다. 
+
+install 명령에 `--user` 옵션을 주고 설치한다.[^2] 
+ - 기본으로 리눅스는 *~/.local* 폴더이고, 
+ - Mac OS X 는 *~/Library/Python/X.Y* 에 위치한다.[^3]
+
+그리고 `PATH` 에 *~/.local/bin* 을 추가한다.
+
+
+
+#### Install Jupyter
+
+사용자 환경에서 pip로 Jupyter를 설치한다. Python3 환경에서 설치를 권장하고 있다. 
 
 ```terminal
-pip install --user virtualenv virtualenvwrapper
+$ python3 -m pip install --user jupyter 
 ```
 
-자동으로 추가되지 않으면, 다음 스크립을 `.bashrc` 에 추가해 준다.
-
-```sh
-# set PATH for pip
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
-VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
-source $HOME/.local/bin/virtualenvwrapper.sh
-```
-
-로그아웃했다 로그인하면 `mkvirtualenv`, `rmvirtualenv` 등의 명령어 스크립이 설치된다.
-
-
-#### Jupyter 가상환경
-
-다음은 `mkvirtualenv` 명령으로 *jupyter*라는 가상환경을 *python3*, 시스템 패키지 사용을 위해 *--system-site-packages* 옵션으로 생성한다.
+그리고 필요하면 Python2에서 설치할 수 있다.
 
 ```terminal
-mkvirtualenv -p python3 --system-site-packages jupyter
-(jupyter) $
-(jupyter) $ python --version
-Python 3.4.6
+$ python2 -m pip install --user jupyter 
 ```
 
-가상환경 *jupyter* 에서 필수 모듈이 사용 가능한지 확인한다. 다음 두 모듈이 없으면 jupyter 설치가 제대로 안된다.
-
-```sh
-(jupyter) $ python -c "import numpy;print(numpy.__version__)"
-1.9.3
-(jupyter) $ python -c "import numpy;print(numpy.__version__)"
-0.16.0
-```
-
-
-그리고 pip로 Jupyter 가상환경에 Jupyter를 설치한다.
-
-```sh
-(jupyter)$ pip install jupyter 
-```
-
-> 물론 가상환경이 아닌 시스템 패키지로 설치해도 된다.
-> $ sudo pip install jupyter geopandas osmnx
-
-`jupyter-notebook`을 실행해 보고, 서버 관련 구성 내용을 설정해서 사용해 보자.
-
-##### Upgrade jupyter
-
-여기서는 pip 가상머신을 이용하고 있어서 다음 같이 pip install 명령으로 업그레이드 할 수 있다.
-
-```terminal
-(jupyter)$ pip install -U jupyter
-```
-
-virtualenv, virtualenvwrapper는 여기서 사용자 .local 환경에 설치했으므로 
-
-```terminal
-pip install -U --user virtualenv virtualenvwrapper
-```
-
-pip3 freeze —local > requirements.txt
-
-
-
+`jupyter notebook`을 실행해 보자.
 
 #### 서버로 실행
 
-`jupyter-notebook` 은 로컬 머신에서 브라우저를 실행한다. 여기서는 원격 사용을 위해 다음 같이 시작할 수 있다. `[DIR]` 에 jupyter-notebook에서 작성한 노트북 파일이 저장된다.
+`jupyter notebook` 을 바로 실행하면 로컬 머신의 브라우저를 실행한다. 여기서는 원격 사용을 위해 다음 같이 브라우저 없이 시작한다.
 
-```
-$ jupyter-notebook --no-browser --ip=* --port=8000 [DIR]
+```terminal
+$ jupyter notebook --no-browser --ip=* --port=8000
 [I 02:51:04.797 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
 [C 02:51:04.800 NotebookApp]
 
@@ -272,9 +193,28 @@ $ jupyter-notebook --no-browser --ip=* --port=8000 [DIR]
         http://localhost:8585/?token=a747472bc9a7c6684829267d2ed0a4cd9a722e
 ```
 
-시작후 `?token=a.....` 부분의 토큰을 복사해 브라우저에 입력후 쥬피터 노트북 사용을 시작한다. 브라우저로 노트북에 접속해서 복사한 토큰을 입력한 후 로그인한다.
+jupyter notebook을 시작하면 콘솔에 `?token=a.....` 부분의 토큰을 복사해 브라우저에 입력후 쥬피터 노트북 사용을 시작한다. 브라우저로 노트북에 접속해서 복사한 토큰을 입력한 후 로그인한다.
 
 ![](/images/python/jupyter5-run.png){:width="650"}
+
+
+#### 사용자 설치 모듈 목록
+
+여기까지 pip로 사용자 환경 local에 설치한 모듈 목록을 백업해 둘 수 있다.
+
+```terminal
+$ pip freeze —-local > requirements.txt
+```
+
+
+##### Upgrade jupyter
+
+여기서는 pip 가상머신을 이용하고 있어서 다음 같이 pip install 명령으로 업그레이드 할 수 있다.
+
+```terminal
+$ python3 -m pip install -U --user jupyter
+```
+
 
 
 <br>
@@ -301,7 +241,7 @@ Out[2]: 'sha1:67c9e60bb8b6:9ffede0825894254b2e043ea597d771089e11eed'
 
 #### 데이터 설정 파일
 
-다음 같이 설정 파일을 생성해서 사용할 수 있다.
+먼저 다음 같이 설정 파일을 생성한다.
 
 ```sh
 $ jupyter notebook --generate-config
@@ -312,7 +252,7 @@ $ cd .jupyter && mv jupyter_notebook_config.py mynotebook.py
 *mynotebook.py*에 다음을 설정한다.
 
 ```
-## The base URL for the notebook server.
+#c.NotebookApp.notebook_dir = '/path/to/notebook_directory'
 c.NotebookApp.base_url = 'http://www.yourdomain.com/notebok'
 c.NotebookApp.password = ''
 c.NotebookApp.port = 8000
@@ -367,13 +307,6 @@ nohup 과 결합해서 사용해도 좋은 방법으로 crontab 을 사용해 �
 
 systemd unit으로 새로운 unit 파일을 생성해서 기존 `systemctl` 명령으로 시작/상태/종료/재시작 등의 작업을 할 수 있다. 물론 재시동 관련해서도 완벽히 동작한다.
 
-우선 jupyter-notebook 명령의 절대 경로를 찾아서 이 위치를 유닛 파일의 Exec 명령에 사용한다.
-
-```terminal
-$ which jupyter-notebook
-/home/foo/.local/bin/jupyter-notebook
-```
-
 systemd의 unit 위치는 OS 마다 조금 다른 것 같다. 여기서는 */etc/systemd/system* 밑에 *jupyter.service* 라는 유닉 파일로 직접 작업한다.
 
  - /etc/systemd/system/jupyter.service
@@ -388,7 +321,7 @@ Description=My Jupyter-Notebook
 [Service]
 Type=simple
 PIDFile=/run/jupyter-notebook.pid
-ExecStart=/home/foo/.local/bin/jupyter-notebook --config=/home/foo/.jupyter/mynotebook.py
+ExecStart=/home/foo/.virtualenvs/jupyter/bin/jupyter-notebook --config=/home/foo/.jupyter/mynotebook.py
 User=foo
 Group=foo
 WorkingDirectory=/home/foo/notebooks
@@ -408,23 +341,21 @@ systemctl restart jupyter.service
 ```
 
 
-현재 서버의 열린 포트는 다음 같이 `netstat` 명령으로 확인이 가능하다. 세번째 컬럼 처럼 `127.0.0.1` 에 열리면 외부에서 접근이 안된다.
-
+현재 서버의 열린 포트는 다음 같이 `netstat` 명령으로 확인이 가능하다.
 ```terminal
 $ netstat -tlnp
 tcp        0      0 127.0.0.1:8585          0.0.0.0:*              LISTEN      11906/python3
 ```
 
+### virtualenv 이용
 
-```terminal
-$ netstat -tlnp
-tcp        0      0 0.0.0.0:8585          0.0.0.0:*              LISTEN      11906/python3
-```
+Python과 Virtualenv 환경을 더 알고 싶으면 다음 두 링크에 자세한 설명이 있다.
+ - [Python - Install virtualenv on Linux]({% post_url /python/2017-04-03-virtualenv-linux %})
 
 
 ## 참조
 
-- [Pandas Install](http://pandas.pydata.org/pandas-docs/stable/install.html)
+- [Installing the Jupyter Notebook](http://jupyter.org/install)
 - [Scipy Install](https://www.scipy.org/install.html)
 - [Scientific Python on Raspberry Pi](http://geoffboeing.com/2016/03/scientific-python-raspberry-pi/)
 

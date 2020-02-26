@@ -103,6 +103,22 @@ check that virtualenvwrapper has been installed for
 VIRTUALENVWRAPPER_PYTHON=/usr/bin/python and that PATH is
 
 
+#### 점검
+
+
+I then search for the location of virtualenv and virtualenv wrapper to confirm their locations:
+
+```
+$ pip3 show virtualenv
+Location: /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages
+```
+
+```
+$ pip3 show virtualenvwrapper
+Location: /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages
+```
+
+
 #### Quick-Start
 
 새로운 가상환경은 `mkvirtualenv NAME` 명령으로 만든다. 가상환경으로 전환시 프롬프트가 `(NAME) $` 형태로 표시된다.
@@ -142,5 +158,3 @@ $ workon django3
 ```bash 
 (django3):~$ deactivate
 ```
-
-

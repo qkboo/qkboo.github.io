@@ -95,6 +95,20 @@ $ mongo     // mongo client 로 접속
 
 관리자 계정을 만든후 MongoDB에 `mongo` 클라이언트로 인증 로그인을 한 후에 데이터베이스를 생성하고 해당 데이터베이스 사용자에 접근 권한을 추가해 준다.
 
+
+
+
+#### `security.authorization`
+
+**mongodb.conf** 파일에 `security.authorization` 을 활성화 한다
+
+```
+security:
+  authorization: enabled
+```
+
+
+
 ### 데이터 베이스 생성과 롤 기반 인증
 
 
@@ -128,8 +142,6 @@ switched to db admin
 }
 >
 ```
-
-
 
 이제 각 데이터베이스에 사용자를 생성해서 사용해서 인증한 사용자만 데이터베이스를 사용하게 할 수 있다. 
 

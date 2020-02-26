@@ -1,4 +1,5 @@
 ---
+draft: true
 title: Audacity - Change Voice
 date: 2018-06-19 09:00:00 +0900
 layout: post

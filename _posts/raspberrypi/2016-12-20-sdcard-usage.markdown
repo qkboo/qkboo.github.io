@@ -39,7 +39,7 @@ SD Card는 Secure Digital의 약자로 Flash memory(비휘발성) 카드 포맷�
 
 #### macOS
 
-macOS는 Disk Utility 프로그램으로 디스크에 대한 파티션, 포맷 및 점검을 할 수 있다. GUI 윈도우를 제공하지만 명령줄에서 `diskutil` 명령으로 파티션, 마운트 및 포맷을 할 수 있다.
+macOS는 Disk Utility 프로그램을 명령줄에서 [diskutil](https://ss64.com/osx/diskutil.html) 명령으로 디스크에 대한 파티션, 포맷 및 점검을 할 수 있다. GUI 윈도우를 제공하지만 명령줄에서 `diskutil` 명령으로 파티션, 마운트 및 포맷을 할 수 있다.
 
 명령줄에서 `diskutil` 명령으로 목록과 파티션 마운트를 해제하고 
 
@@ -63,6 +63,9 @@ $ sudo diskutil partitionDisk <Disk> GPT| FAT|exFAT|JHFS+ NAME SIZE
 
  - SIZE: 0b 전체.
 
+#### zeros
+
+$ diskutil reformat /dev/rdisk3
 
 #### Linux
 

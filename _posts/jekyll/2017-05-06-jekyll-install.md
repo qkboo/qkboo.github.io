@@ -6,8 +6,13 @@ tags: [jekyll, install]
 categories: jekyll
 ---
 
+이 글은 github pages 를 통해서 블로그를 할 수 있도록 다음 작업을 한다:
 
-## jekyll
+ - 로컬에 ruby를 기반으로한 jekyll 을 설치한다.
+ - markdown 으로 작성한 문서를 github pages 에 올린다.
+
+
+# jekyll
 
 jekyllrb.com 의 가이드에 따라 github page에서 블로그로 사용하고자 한다.
 

@@ -57,6 +57,7 @@ import tensorflow as tf
 ```python
 node1 = tf.constant(3.0, dtype = tf.float32)
 node2 = tf.constant(4.0) # 명시적으로 tf.float32 를 인자로 사용해도 된다.
+node3 = tf.add(node1, node2)
 print(node1, node2)
 ```
 
