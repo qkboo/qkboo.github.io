@@ -10,17 +10,18 @@
 # Review documentation to determine if you should use `theme` or `remote_theme`
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
-theme                  : "minimal-mistakes-jekyll"
+#theme                  : "minimal-mistakes-jekyll"
 remote_theme           : "mmistakes/minimal-mistakes"
 minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
+encoding                 : "utf-8"
 locale                   : "ko-KR" #"en-US"
 title                    : "Thinkbee Blog"
 title_separator          : "-"
 name                     : "Qkboo Gangtai"
 description              : "Korean blogging for developers"
-url                      : "https://blog.thinkbee.kr" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : "https://blog.thinkbee.kr" # e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
@@ -162,8 +163,6 @@ exclude:
 keep_files:
   - .git
   - .svn
-encoding: "utf-8"
-markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
 
 # Conversion
@@ -174,6 +173,7 @@ excerpt_separator: "\n\n"
 incremental: false
 
 
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 # Markdown Processing
 kramdown:
   input: GFM
@@ -184,12 +184,6 @@ kramdown:
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
   enable_coderay: false
-
-
-# Sass/SCSS
-sass:
-  sass_dir: _sass
-  style: compressed # http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
 
 
 # Outputting
@@ -206,6 +200,7 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jemoji
+  - jekyll-include-cache
 
 # mimic GitHub Pages with --safe
 whitelist:
